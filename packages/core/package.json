@@ -1,0 +1,35 @@
+{
+  "name": "@addcn-cli/core",
+  "version": "0.0.0",
+  "description": "input core",
+  "keywords": [
+    "cli",
+    "core"
+  ],
+  "author": "Jeddy <jed.gong.nine@gmail.com>",
+  "homepage": "https://github.com/jeddygong/addcn-cli#readme",
+  "license": "ISC",
+  "bin": {
+    "addcn-cli": "dist/bin/cli.js"
+  },
+  "main": "lib/core",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jeddygong/addcn-cli.git"
+  },
+  "scripts": {
+    "dev": "tsc -w",
+    "build": "tsc",
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/jeddygong/addcn-cli/issues"
+  }
+}

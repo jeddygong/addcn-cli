@@ -1,0 +1,35 @@
+{
+  "name": "root",
+  "private": true,
+  "scripts": {
+    "dev": "lerna run dev",
+    "publish": "lerna run build && lerna publish",
+    "prepare": "husky install",
+    "commit:comment": "引导设置规范化的提交信息",
+    "commit": "git-cz",
+    "eslint:comment": "使用 ESLint 检查并自动修复 packages 目录下所有扩展名为 .ts 的文件",
+    "eslint": "eslint --fix packages --ext .ts --max-warnings=0",
+    "prettier:comment": "自动格式化 src 目录下的所有 .ts 文件",
+    "prettier": "prettier --write \"packages/**/*.ts\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^13.1.0",
+    "@commitlint/config-conventional": "^13.1.0",
+    "@typescript-eslint/eslint-plugin": "^4.29.1",
+    "@typescript-eslint/parser": "^4.29.1",
+    "commitizen": "^4.2.4",
+    "cz-customizable": "^6.3.0",
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^3.4.0",
+    "lerna": "^4.0.0",
+    "prettier": "^2.3.2",
+    "typescript": "^4.3.5"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-customizable"
+    }
+  }
+}
