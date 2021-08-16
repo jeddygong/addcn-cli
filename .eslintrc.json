@@ -15,7 +15,6 @@
         "plugin:@typescript-eslint/recommended",
         "prettier",
         "plugin:prettier/recommended"
-        // "plugin:@typescript-eslint/recommended-requiring-type-checking"
     ],
 
     // 环境
