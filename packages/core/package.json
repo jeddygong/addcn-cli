@@ -29,7 +29,11 @@
     "build": "tsc",
     "test": "echo \"Error: run tests from root\" && exit 1"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "bugs": {
     "url": "https://github.com/jeddygong/addcn-cli/issues"
-  }
+  },
+  "gitHead": "b3e592e1e857e6b01f1270e2d8ddbd08428dc8ee"
 }
