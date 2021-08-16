@@ -1,0 +1,13 @@
+# .husky/
+# node_modules/
+# .cz-config.js
+# .eslintignore
+# .eslintrc.json
+# .gitignore
+# .prettierrc.js
+# commitlint.config.js
+
+/packages/*/__tests__
+/packages/*/bin
+/packages/*/lib
+/packages/*/tsconfig.json

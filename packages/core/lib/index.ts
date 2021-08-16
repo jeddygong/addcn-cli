@@ -1,6 +1,6 @@
 function core() {
     // TODO
-    console.log(111asdas);
+    console.log(111);
 }
 
 export default core;
