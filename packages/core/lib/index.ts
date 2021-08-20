@@ -4,12 +4,13 @@
  * @create 2021-08-16 22:28:41
  */
 
-import { utils } from '@addcn-cli/utils';
+import { utils, npmlog } from '@addcn-cli/utils';
+console.log(utils, 'utils');
 
 function core() {
-    utils();
+    // utils();
     // TODO
-    console.log(111);
+    console.log(npmlog, 222);
 }
 
 export default core;

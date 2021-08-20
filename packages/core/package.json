@@ -25,8 +25,8 @@
     "url": "git+https://github.com/jeddygong/addcn-cli.git"
   },
   "scripts": {
-    "dev": "tsc -w",
-    "build": "tsc",
+    "dev": "npx tsc -w",
+    "build": "npx tsc",
     "test": "echo \"Error: run tests from root\" && exit 1"
   },
   "publishConfig": {
@@ -37,6 +37,6 @@
   },
   "gitHead": "b3e592e1e857e6b01f1270e2d8ddbd08428dc8ee",
   "devDependencies": {
-    "@addcn-cli/utils": "file: ../utils"
+    "@addcn-cli/utils": "file:../utils"
   }
 }

@@ -4,11 +4,18 @@
  * @create 2021-08-16 22:26:21
  */
 
+import npmlog from './npmlog';
+
 const utils = () => {
     // TODO
     console.log('开始执行 util 包');
 };
 
-export default {
-    utils,
-};
+function test(): void {
+    console.log(111);
+}
+
+test();
+
+// 导出
+export { utils, npmlog };
