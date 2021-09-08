@@ -6,6 +6,7 @@
 
 // 工具库
 import semver from 'semver';
+import minimist from 'minimist';
 // import chalk from 'chalk';
 // import shell from 'shelljs';
 import child_process from 'child_process';
@@ -88,4 +89,14 @@ export const checkPkgVersion = async (version: string) => {
         currentVersion: version,
         latestVersion: latestVersion.trim(),
     };
+};
+
+/**
+ * 检查输入的参数
+ */
+export const getInputArgs = () => {
+    const args = minimist(process.argv.slice(2));
+    // console.log(args);
+
+    return args;
 };

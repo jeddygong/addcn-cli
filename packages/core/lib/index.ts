@@ -13,6 +13,7 @@ import {
     inquirer,
     checkNodeVersion,
     checkPkgVersion,
+    getInputArgs,
 } from '@addcn-cli/utils';
 import pkgConfig from '../package.json';
 
@@ -27,6 +28,10 @@ const cli = async () => {
 
         // 检查当前运行的 node 版本
         await checkNodeVersion(LOWEST_NODE_VERSION);
+
+        // 获取当前所有参数
+        const grgs = getInputArgs();
+        console.log(grgs, 'grgs');
 
         // console.log(inquirer, 111);
     } catch (error) {

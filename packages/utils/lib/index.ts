@@ -6,7 +6,7 @@
 
 import npmlog from './npmlog';
 import inquirer from './inquirer';
-import { checkNodeVersion, checkPkgVersion } from './utils';
+import { checkNodeVersion, checkPkgVersion, getInputArgs } from './utils';
 
 const utils = () => {
     // TODO
@@ -14,4 +14,11 @@ const utils = () => {
 };
 
 // 导出
-export { utils, npmlog, inquirer, checkNodeVersion, checkPkgVersion };
+export {
+    utils,
+    npmlog,
+    inquirer,
+    checkNodeVersion,
+    checkPkgVersion,
+    getInputArgs,
+};

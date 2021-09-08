@@ -13,22 +13,6 @@ interface IUtils {
 }
 
 // inquirer 参数定义
-interface IParameters {
-    type: string;
-    name?: string;
-    choices?: [];
-    default?: string | number | undefined | null;
-    defaultValue?: string | number | undefined | null | boolean;
-    message: string;
-    require?: boolean;
-    mask?: string;
-}
-
-interface IPkgVersion {
-    isUpdate: boolean;
-    currentVersion: string;
-    latestVersion: string;
-}
 
 declare module '@addcn-cli/utils' {
     const utils: IUtils;
@@ -38,9 +22,29 @@ declare module '@addcn-cli/utils' {
 
     export const npmlog: npmlog.Logger;
 
+    interface IParameters {
+        type: string;
+        name?: string;
+        choices?: [];
+        default?: string | number | undefined | null;
+        defaultValue?: string | number | undefined | null | boolean;
+        message: string;
+        require?: boolean;
+        mask?: string;
+    }
     export function inquirer(params:IParameters): Promise<T>;
 
     export function checkNodeVersion(version:string): void;
 
+    interface IPkgVersion {
+        isUpdate: boolean;
+        currentVersion: string;
+        latestVersion: string;
+    }
     export function checkPkgVersion(version:string): Promise<IPkgVersion>;
+
+    interface IInputArgs {
+        [key:string]: any
+    }
+    export function getInputArgs(): IInputArgs;
 }
