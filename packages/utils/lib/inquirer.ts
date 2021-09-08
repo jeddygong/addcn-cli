@@ -9,16 +9,16 @@ import inquirer from 'inquirer';
 interface IParameters {
     type: string;
     name?: string;
-    choices: [];
+    choices?: [];
     default?: string | number | undefined | null;
-    defaultValue?: string | number | undefined | null;
+    defaultValue?: string | number | undefined | null | boolean;
     message: string;
-    require: boolean;
-    mask: string;
+    require?: boolean;
+    mask?: string;
 }
 
 export default function ({
-    choices,
+    choices = [],
     defaultValue,
     message,
     type = 'list',

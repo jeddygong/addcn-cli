@@ -16,12 +16,18 @@ interface IUtils {
 interface IParameters {
     type: string;
     name?: string;
-    choices: [];
+    choices?: [];
     default?: string | number | undefined | null;
-    defaultValue?: string | number | undefined | null;
+    defaultValue?: string | number | undefined | null | boolean;
     message: string;
-    require: boolean;
-    mask: string;
+    require?: boolean;
+    mask?: string;
+}
+
+interface IPkgVersion {
+    isUpdate: boolean;
+    currentVersion: string;
+    latestVersion: string;
 }
 
 declare module '@addcn-cli/utils' {
@@ -36,5 +42,5 @@ declare module '@addcn-cli/utils' {
 
     export function checkNodeVersion(version:string): void;
 
-    export function checkPkgVersion(version:string): void;
+    export function checkPkgVersion(version:string): Promise<IPkgVersion>;
 }

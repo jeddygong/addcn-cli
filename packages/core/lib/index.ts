@@ -6,27 +6,67 @@
 
 // 工具库
 // import { program } from 'commander';
+import chalk from 'chalk';
 
-import { npmlog, checkNodeVersion, checkPkgVersion } from '@addcn-cli/utils';
-import packageConfig from '../package.json';
+import {
+    npmlog,
+    inquirer,
+    checkNodeVersion,
+    checkPkgVersion,
+} from '@addcn-cli/utils';
+import pkgConfig from '../package.json';
 
 import CONST_CONFIG from './config';
 const { LOWEST_NODE_VERSION } = CONST_CONFIG;
 
 const cli = async () => {
     try {
-        // 检查当前脚手架的版本，判断是否更新
-        checkPkgVersion(packageConfig.version);
+        // 检查当前脚手架的版本
+        const bool = await localCheckPkgVersion();
+        if (!bool) return;
 
         // 检查当前运行的 node 版本
-        checkNodeVersion(LOWEST_NODE_VERSION);
+        await checkNodeVersion(LOWEST_NODE_VERSION);
 
         // console.log(inquirer, 111);
     } catch (error) {
-        console.log(error, 111);
+        // console.log(error, 111);
 
-        npmlog.error(error);
+        npmlog.error('error', chalk.red(error.message));
     }
+};
+
+/**
+ * 检查当前脚手架版本，提示是否更新
+ * @returns Promise<boolean>
+ */
+const localCheckPkgVersion = async () => {
+    const { isUpdate, currentVersion, latestVersion } = await checkPkgVersion(
+        pkgConfig.version,
+    );
+    // console.log(isUpdate, 'result');
+    if (!isUpdate) {
+        npmlog.error(
+            'error',
+            chalk.red(
+                `您当前的脚手架版本(${currentVersion})过低，建议您安装最新的版本(${latestVersion})`,
+            ),
+        );
+        // 显示提示消息，是否更新
+        const isUpdateCli = await inquirer({
+            type: 'confirm',
+            name: 'isUpdateCli',
+            defaultValue: false,
+            message: `是否更新addcn-cli脚手架最新版(${latestVersion}) ？`,
+        });
+
+        // console.log(isUpdateCli, 'isUpdateCli');
+        if (isUpdateCli) npmlog.info('info', 'start update addcn-cli');
+
+        return !isUpdateCli;
+    }
+
+    return true;
 };
 
 export default cli;
