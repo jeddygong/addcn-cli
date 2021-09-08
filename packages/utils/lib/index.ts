@@ -5,17 +5,13 @@
  */
 
 import npmlog from './npmlog';
+import inquirer from './inquirer';
+import { checkNodeVersion, checkPkgVersion } from './utils';
 
 const utils = () => {
     // TODO
     console.log('开始执行 util 包');
 };
 
-function test(): void {
-    console.log(111);
-}
-
-test();
-
 // 导出
-export { utils, npmlog };
+export { utils, npmlog, inquirer, checkNodeVersion, checkPkgVersion };
