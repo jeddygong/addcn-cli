@@ -39,8 +39,8 @@ export const getLatestVersion = (pkgName: string): Promise<string> => {
  * @param version 当前需要比较的版本
  */
 export const checkNodeVersion = (version: string) => {
-    console.log('当前 node version：' + process.version);
-    console.log('支持的 node version：' + version);
+    // console.log('当前 node version：' + process.version);
+    // console.log('支持的 node version：' + version);
 
     if (!semver.gte(process.version, version)) {
         throw new Error(
@@ -62,7 +62,7 @@ export const checkNodeVersion = (version: string) => {
 export const checkPkgVersion = async (version: string) => {
     // 1. 对比一下当前包的版本是否小于线上版本
     const latestVersion = await getLatestVersion('@addcn-cli/core');
-    console.log('这是线上的版本号：' + latestVersion);
+    // console.log('这是线上的版本号：' + latestVersion);
     if (!semver.gte(version, latestVersion)) {
         // throw npmlog.error(
         //     'error',
