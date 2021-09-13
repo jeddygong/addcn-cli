@@ -7,7 +7,6 @@
 // 工具库
 import { program } from 'commander';
 import chalk from 'chalk';
-
 import {
     npmlog,
     inquirer,
@@ -15,6 +14,9 @@ import {
     checkPkgVersion,
     getInputArgs,
 } from '@addcn-cli/utils';
+
+// 方法引入
+import { clone } from './clone';
 import pkgConfig from '../package.json';
 
 import CONST_CONFIG from './config';
@@ -36,7 +38,7 @@ const cli = async () => {
         // 注册命令
         registerCommand();
     } catch (error) {
-        // console.log(error, 111);
+        console.log(error, 111);
         npmlog.error('error', chalk.red(error.message));
     }
 };
@@ -45,33 +47,69 @@ const cli = async () => {
  * 开始注册命令
  */
 const registerCommand = () => {
-    console.log('start register command');
+    // 重载错误输出
+    program.exitOverride();
 
-    // 初始化帮助信息
-    getHelpDocument();
+    try {
+        console.log('start register command');
 
-    // 初始化命令
-    program
-        .command('init')
-        .description('初始化脚手架')
-        .action(async () => {
-            npmlog.success('success', '初始化完成');
+        // 初始化帮助信息
+        getHelpDocument();
+
+        // 初始化命令
+        program
+            .command('init')
+            .description('初始化脚手架')
+            .action(async () => {
+                npmlog.success('success', '初始化完成');
+            });
+
+        // 创建项目命令
+        program
+            .command('create <app-name>')
+            .description('创建一个新项目')
+            .option('-f, --force', '强制更新所有缓存信息')
+            .action(async () => {
+                npmlog.success('success', '创建一个新项目完成');
+            });
+
+        // 下载远程仓库至本地
+        program
+            .command('inistall <url>')
+            .description('安装一个「模板插件包」到当前脚手架') // 把这个模板插件包下载到硬盘
+            .option('-f, --force', '强制更新所有缓存信息')
+            .action(async () => {
+                npmlog.success(
+                    'success',
+                    '安装一个「模板插件包」到当前脚手架完成',
+                );
+            });
+
+        // 克隆仓库中的项目
+        program
+            .command('clone <url> <app-name> [options]')
+            .description('克隆github/gitlab上的项目模板至当前目录')
+            .option('-f, --force', '强制更新所有缓存信息')
+            .action(async (url, appName, options, commands) => {
+                console.log(url, 'url');
+                console.log(appName, 'appName');
+                console.log(options, 'options');
+                console.log(commands, 'commands');
+                clone(url, appName, options);
+            });
+
+        // 使program返回的错误信息是空
+        program.configureOutput({
+            // 输出错误“”.
+            outputError: () => '',
         });
 
-    // 创建项目命令
-    program
-        .command('create [app-name] [options]')
-        .description('创建一个新项目')
-        .option('-f, --force', '强制更新所有缓存信息')
-        .action(async () => {
-            npmlog.success('success', '创建一个新项目完成');
-        });
-
-    // 没有命令的时候，输出帮助文档
-    program.outputHelp();
-
-    // 注册所有命令
-    program.parse(process.argv);
+        // 注册所有命令
+        program.parse(process.argv);
+    } catch (error) {
+        // console.log(error, '2222');
+        npmlog.error('error', chalk.red(error.message));
+    }
 };
 
 /**
@@ -88,10 +126,23 @@ const getHelpDocument = () => {
         .helpOption('-h, --help', '展示帮助文档')
 
         // 关闭子命令的 help
-        .addHelpCommand(true)
+        .addHelpCommand(false)
 
         // 展示主命令规则
         .usage('<command> [options] 数睿科技脚手架使用规则');
+
+    // 在结尾自定义帮助文档
+    program.addHelpText(
+        'afterAll',
+        `
+  Run ${chalk.green(
+      'addcn-cli <command> --help',
+  )} for detailed usage of given command
+  `,
+    );
+
+    // 没有命令的时候，输出帮助文档
+    // program.outputHelp();
 };
 
 /**
