@@ -60,9 +60,10 @@ export const checkNodeVersion = (version: string) => {
  * @param version 当前 package 包的版本
  */
 export const checkPkgVersion = async (version: string) => {
-    // 1. 对比一下当前包的版本是否小于线上版本
+    // 1. 获取线上的最新包的版本号
     const latestVersion = await getLatestVersion('@addcn-cli/core');
-    // console.log('这是线上的版本号：' + latestVersion);
+
+    // 2. 对比一下当前包的版本是否小于线上版本
     if (!semver.gte(version, latestVersion)) {
         // throw npmlog.error(
         //     'error',

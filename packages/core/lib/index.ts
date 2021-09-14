@@ -7,6 +7,7 @@
 // 工具库
 import { program } from 'commander';
 import chalk from 'chalk';
+import ora from 'ora';
 import {
     npmlog,
     inquirer,
@@ -23,7 +24,9 @@ import CONST_CONFIG from './config';
 const { LOWEST_NODE_VERSION } = CONST_CONFIG;
 
 const cli = async () => {
+    const spinner = ora(`${chalk.yellow('欢迎使用addcn-cli脚手架')}`);
     try {
+        spinner.start();
         // 检查当前脚手架的版本
         const bool = await localCheckPkgVersion();
         if (!bool) return;
@@ -37,8 +40,12 @@ const cli = async () => {
 
         // 注册命令
         registerCommand();
+
+        // 停止ora
+        spinner.stop();
     } catch (error) {
         console.log(error, 111);
+        spinner.stop();
         npmlog.error('error', chalk.red(error.message));
     }
 };
@@ -50,66 +57,54 @@ const registerCommand = () => {
     // 重载错误输出
     program.exitOverride();
 
-    try {
-        console.log('start register command');
+    console.log('start register command');
 
-        // 初始化帮助信息
-        getHelpDocument();
+    // 初始化帮助信息
+    getHelpDocument();
 
-        // 初始化命令
-        program
-            .command('init')
-            .description('初始化脚手架')
-            .action(async () => {
-                npmlog.success('success', '初始化完成');
-            });
-
-        // 创建项目命令
-        program
-            .command('create <app-name>')
-            .description('创建一个新项目')
-            .option('-f, --force', '强制更新所有缓存信息')
-            .action(async () => {
-                npmlog.success('success', '创建一个新项目完成');
-            });
-
-        // 下载远程仓库至本地
-        program
-            .command('inistall <url>')
-            .description('安装一个「模板插件包」到当前脚手架') // 把这个模板插件包下载到硬盘
-            .option('-f, --force', '强制更新所有缓存信息')
-            .action(async () => {
-                npmlog.success(
-                    'success',
-                    '安装一个「模板插件包」到当前脚手架完成',
-                );
-            });
-
-        // 克隆仓库中的项目
-        program
-            .command('clone <url> <app-name> [options]')
-            .description('克隆github/gitlab上的项目模板至当前目录')
-            .option('-f, --force', '强制更新所有缓存信息')
-            .action(async (url, appName, options, commands) => {
-                console.log(url, 'url');
-                console.log(appName, 'appName');
-                console.log(options, 'options');
-                console.log(commands, 'commands');
-                clone(url, appName, options);
-            });
-
-        // 使program返回的错误信息是空
-        program.configureOutput({
-            // 输出错误“”.
-            outputError: () => '',
+    // 初始化命令
+    program
+        .command('init')
+        .description('初始化脚手架')
+        .action(async () => {
+            npmlog.success('success', '初始化完成');
         });
 
-        // 注册所有命令
-        program.parse(process.argv);
-    } catch (error) {
-        // console.log(error, '2222');
-        npmlog.error('error', chalk.red(error.message));
-    }
+    // 创建项目命令
+    program
+        .command('create <app-name>')
+        .description('创建一个新项目')
+        .option('-f, --force', '强制更新所有缓存信息')
+        .action(async () => {
+            npmlog.success('success', '创建一个新项目完成');
+        });
+
+    // 下载远程仓库至本地
+    program
+        .command('inistall <url>')
+        .description('安装一个「模板插件包」到当前脚手架') // 把这个模板插件包下载到硬盘
+        .option('-f, --force', '强制更新所有缓存信息')
+        .action(async () => {
+            npmlog.success('success', '安装一个「模板插件包」到当前脚手架完成');
+        });
+
+    // 克隆仓库中的项目
+    program
+        .command('clone <url> <app-name> [options]')
+        .description('克隆github/gitlab上的项目模板至当前目录')
+        .option('-f, --force', '强制更新所有缓存信息')
+        .action(async (url, appName, options) => {
+            clone(url, appName, options);
+        });
+
+    // 使program返回的错误信息是空
+    program.configureOutput({
+        // 输出错误“”.
+        outputError: () => '',
+    });
+
+    // 注册所有命令
+    program.parse(process.argv);
 };
 
 /**
@@ -142,7 +137,7 @@ const getHelpDocument = () => {
     );
 
     // 没有命令的时候，输出帮助文档
-    // program.outputHelp();
+    program.outputHelp();
 };
 
 /**
