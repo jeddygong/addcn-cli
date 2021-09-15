@@ -23,16 +23,30 @@ import pkgConfig from '../package.json';
 import CONST_CONFIG from './config';
 const { LOWEST_NODE_VERSION } = CONST_CONFIG;
 
-const cli = async () => {
-    const spinner = ora(`${chalk.yellow('欢迎使用addcn-cli脚手架')}`);
+process.spinner = ora({
+    text: `${chalk.yellow(`欢迎使用数睿科技addcn-cli脚手架
+`)}`,
+    // discardStdin: false,
+});
+// spinner.start();
+
+async function cli() {
+    // spinner.indent = 2;
+    process.spinner.spinner = {
+        interval: 60,
+        frames: ['|', '/', '-', '\\', '\\'],
+    };
     try {
-        spinner.start();
         // 检查当前脚手架的版本
         const bool = await localCheckPkgVersion();
+
+        // spinner.text = '';
+        process.spinner.succeed();
+
         if (!bool) return;
 
         // 检查当前运行的 node 版本
-        await checkNodeVersion(LOWEST_NODE_VERSION);
+        checkNodeVersion(LOWEST_NODE_VERSION);
 
         // 获取当前所有参数
         const grgs = getInputArgs();
@@ -42,22 +56,20 @@ const cli = async () => {
         registerCommand();
 
         // 停止ora
-        spinner.stop();
+        process.spinner.stop();
     } catch (error) {
         console.log(error, 111);
-        spinner.stop();
+        process.spinner.stop();
         npmlog.error('error', chalk.red(error.message));
     }
-};
+}
 
 /**
  * 开始注册命令
  */
 const registerCommand = () => {
     // 重载错误输出
-    program.exitOverride();
-
-    console.log('start register command');
+    // program.exitOverride();
 
     // 初始化帮助信息
     getHelpDocument();
@@ -98,13 +110,14 @@ const registerCommand = () => {
         });
 
     // 使program返回的错误信息是空
-    program.configureOutput({
-        // 输出错误“”.
-        outputError: () => '',
-    });
+    // program.configureOutput({
+    //     // 输出错误“”.
+    //     outputError: () => '',
+    // });
 
     // 注册所有命令
     program.parse(process.argv);
+    process.spinner.stop();
 };
 
 /**

@@ -7,7 +7,7 @@
 // 工具库
 import semver from 'semver';
 import minimist from 'minimist';
-// import chalk from 'chalk';
+import chalk from 'chalk';
 // import shell from 'shelljs';
 import child_process from 'child_process';
 
@@ -20,6 +20,9 @@ import npmlog from './npmlog';
  * @returns Promise<string>
  */
 export const getLatestVersion = (pkgName: string): Promise<string> => {
+    // console.log(process.spinner, 'process.spinner');
+
+    process.spinner.start();
     return new Promise((resolve, reject) => {
         // 通过命令 npm info jquery 获取线上的最新版本信息
         // shell.exec('npm version @my-cli-ts/core');
@@ -29,6 +32,7 @@ export const getLatestVersion = (pkgName: string): Promise<string> => {
                 // console.log(err, stdout, stderr);
                 if (err) reject(stderr);
                 resolve(stdout);
+                process.spinner.stop();
             },
         );
     });
@@ -42,16 +46,14 @@ export const checkNodeVersion = (version: string) => {
     // console.log('当前 node version：' + process.version);
     // console.log('支持的 node version：' + version);
 
-    if (!semver.gte(process.version, version)) {
-        throw new Error(
-            `您的 Node.js 版本过低，addcn-cli 需要安装 v${version} 以上版本的 Node.js`,
-        );
-        // throw npmlog.error(
-        //     'error',
-        //     chalk.red(
-        //         `您的 node.js 版本过低，addcn-cli需要安装 v${version} 以上版本的 Node.js`,
-        //     ),
-        // );
+    try {
+        if (!semver.gte(process.version, version)) {
+            throw new Error(
+                `您的 Node.js 版本过低，addcn-cli 需要安装 v${version} 以上版本的 Node.js`,
+            );
+        }
+    } catch (error) {
+        npmlog.error('error', chalk.red(error.message));
     }
 };
 

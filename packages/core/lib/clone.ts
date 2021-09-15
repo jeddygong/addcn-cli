@@ -16,6 +16,7 @@ export const clone = (url: string, appName: string, options: any) => {
     const spinner = ora(
         `${chalk.yellow('正在使用addcn-cli脚手架克隆远程仓库项目至本地')}`,
     );
+    spinner.indent = 2;
 
     try {
         spinner.start();
