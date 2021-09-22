@@ -7,16 +7,15 @@
 // 工具库
 import download from 'download-git-repo';
 import chalk from 'chalk';
-import ora from 'ora';
-import { npmlog } from '@addcn-cli/utils';
+import { npmlog, spinner } from '@addcn-cli/utils';
 
 export const clone = (url: string, appName: string, options: any) => {
     console.log(url, appName, options, 'start clone');
 
-    const spinner = ora(
-        `${chalk.yellow('正在使用addcn-cli脚手架克隆远程仓库项目至本地')}`,
-    );
-    spinner.indent = 2;
+    // const spinner = ora(
+    //     `${chalk.yellow('正在使用addcn-cli脚手架克隆远程仓库项目至本地')}`,
+    // );
+    // spinner.indent = 2;
 
     try {
         spinner.start();

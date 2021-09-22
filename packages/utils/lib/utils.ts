@@ -12,6 +12,7 @@ import chalk from 'chalk';
 import child_process from 'child_process';
 
 import npmlog from './npmlog';
+import spinner from './spinner';
 
 /**
  * 获取当前包的线上的latest版本
@@ -20,9 +21,10 @@ import npmlog from './npmlog';
  * @returns Promise<string>
  */
 export const getLatestVersion = (pkgName: string): Promise<string> => {
-    // console.log(process.spinner, 'process.spinner');
+    // console.log(spinner, 'spinner');
 
-    process.spinner.start();
+    // process.env.
+    spinner.start();
     return new Promise((resolve, reject) => {
         // 通过命令 npm info jquery 获取线上的最新版本信息
         // shell.exec('npm version @my-cli-ts/core');
@@ -32,7 +34,7 @@ export const getLatestVersion = (pkgName: string): Promise<string> => {
                 // console.log(err, stdout, stderr);
                 if (err) reject(stderr);
                 resolve(stdout);
-                process.spinner.stop();
+                spinner.stop();
             },
         );
     });

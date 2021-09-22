@@ -6,6 +6,7 @@
 
 import npmlog from './npmlog';
 import inquirer from './inquirer';
+import spinner from './spinner';
 import { checkNodeVersion, checkPkgVersion, getInputArgs } from './utils';
 
 const utils = () => {
@@ -21,4 +22,5 @@ export {
     checkNodeVersion,
     checkPkgVersion,
     getInputArgs,
+    spinner,
 };

@@ -7,7 +7,7 @@
 // 相互之间引用的写法如下：这就代表这里依赖了npmlog.d.ts了
 /// <reference path="./npmlog.d.ts"/>
 /// <reference path="./../../packages/utils/node_modules/@types/inquirer/index.d.ts"/>
-// import npmlog from './../../packages/utils/node_modules/@types/npmlog';
+/// <reference path="./../../packages/utils/node_modules/ora/index.d.ts"/>
 interface IUtils {
     utils: () => void;
 }
@@ -47,4 +47,7 @@ declare module '@addcn-cli/utils' {
         [key:string]: any
     }
     export function getInputArgs(): IInputArgs;
+
+    // ora 类型补充
+    export const spinner: ora.Ora;
 }

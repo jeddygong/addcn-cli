@@ -7,13 +7,13 @@
 // 工具库
 import { program } from 'commander';
 import chalk from 'chalk';
-import ora from 'ora';
 import {
     npmlog,
     inquirer,
     checkNodeVersion,
     checkPkgVersion,
     getInputArgs,
+    spinner,
 } from '@addcn-cli/utils';
 
 // 方法引入
@@ -23,16 +23,9 @@ import pkgConfig from '../package.json';
 import CONST_CONFIG from './config';
 const { LOWEST_NODE_VERSION } = CONST_CONFIG;
 
-process.spinner = ora({
-    text: `${chalk.yellow(`欢迎使用数睿科技addcn-cli脚手架
-`)}`,
-    // discardStdin: false,
-});
-// spinner.start();
-
 async function cli() {
     // spinner.indent = 2;
-    process.spinner.spinner = {
+    spinner.spinner = {
         interval: 60,
         frames: ['|', '/', '-', '\\', '\\'],
     };
@@ -41,7 +34,7 @@ async function cli() {
         const bool = await localCheckPkgVersion();
 
         // spinner.text = '';
-        process.spinner.succeed();
+        spinner.succeed();
 
         if (!bool) return;
 
@@ -56,10 +49,10 @@ async function cli() {
         registerCommand();
 
         // 停止ora
-        process.spinner.stop();
+        spinner.stop();
     } catch (error) {
         console.log(error, 111);
-        process.spinner.stop();
+        spinner.stop();
         npmlog.error('error', chalk.red(error.message));
     }
 }
@@ -117,7 +110,7 @@ const registerCommand = () => {
 
     // 注册所有命令
     program.parse(process.argv);
-    process.spinner.stop();
+    spinner.stop();
 };
 
 /**
