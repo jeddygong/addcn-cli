@@ -5,10 +5,13 @@
  */
 
 import ora from 'ora';
-import chalk from 'chalk';
+// import chalk from 'chalk';
 
-const spinner = ora(
-    `${chalk.yellow('正在使用addcn-cli脚手架克隆远程仓库项目至本地')}`,
-);
+const spinner = ora();
+
+spinner.spinner = {
+    interval: 60,
+    frames: ['|', '/', '-', '\\', '\\'],
+};
 
 export default spinner;

@@ -47,12 +47,12 @@ export const clone = (url: string, appName: string, options: any) => {
                 // 开始克隆
                 npmlog.success('success', `克隆完成，已克隆至${appName}目录下`);
             } catch (error) {
-                npmlog.error('error', chalk.red(error.message));
+                npmlog.error('error', chalk.red(error));
             }
             // console.log(err ? 'Error' : 'Success', JSON.stringify(err));
         });
     } catch (error) {
         spinner.stop();
-        npmlog.error('error', chalk.red(error.message));
+        npmlog.error('error', chalk.red(error));
     }
 };

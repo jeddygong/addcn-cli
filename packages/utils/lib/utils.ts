@@ -7,7 +7,7 @@
 // 工具库
 import semver from 'semver';
 import minimist from 'minimist';
-import chalk from 'chalk';
+// import chalk from 'chalk';
 // import shell from 'shelljs';
 import child_process from 'child_process';
 
@@ -48,15 +48,18 @@ export const checkNodeVersion = (version: string) => {
     // console.log('当前 node version：' + process.version);
     // console.log('支持的 node version：' + version);
 
-    try {
-        if (!semver.gte(process.version, version)) {
-            throw new Error(
-                `您的 Node.js 版本过低，addcn-cli 需要安装 v${version} 以上版本的 Node.js`,
-            );
-        }
-    } catch (error) {
-        npmlog.error('error', chalk.red(error.message));
+    // try {
+    if (!semver.gte(process.version, version)) {
+        throw new Error(
+            `您的 Node.js 版本过低，addcn-cli 需要安装 v${version} 以上版本的 Node.js`,
+        );
     }
+    // } catch (error) {
+    //     // npmlog.error('error', chalk.red(error));
+    //     throw new Error(
+    //         `您的 Node.js 版本过低，addcn-cli 需要安装 v${version} 以上版本的 Node.js111`,
+    //     );
+    // }
 };
 
 /**
@@ -66,6 +69,7 @@ export const checkNodeVersion = (version: string) => {
 export const checkPkgVersion = async (version: string) => {
     // 1. 获取线上的最新包的版本号
     const latestVersion = await getLatestVersion('@addcn-cli/core');
+    // console.log(version, latestVersion, 'version');
 
     // 2. 对比一下当前包的版本是否小于线上版本
     if (!semver.gte(version, latestVersion)) {
@@ -86,8 +90,8 @@ export const checkPkgVersion = async (version: string) => {
     }
 
     // 2. 提示日志输出
-    npmlog.notice('addcn-cli', version);
-    npmlog.success('欢迎使用数睿科技addcn-cli脚手架');
+    npmlog.notice('addcn-cli version:', version);
+    // npmlog.success('欢迎使用数睿科技addcn-cli脚手架');
 
     return {
         isUpdate: true,

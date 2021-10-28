@@ -7,6 +7,7 @@
 // 工具库
 import { program } from 'commander';
 import chalk from 'chalk';
+import child_process from 'child_process';
 import {
     npmlog,
     inquirer,
@@ -18,42 +19,39 @@ import {
 
 // 方法引入
 import { clone } from './clone';
+import { init } from './init';
 import pkgConfig from '../package.json';
 
 import CONST_CONFIG from './config';
 const { LOWEST_NODE_VERSION } = CONST_CONFIG;
 
 async function cli() {
-    // spinner.indent = 2;
-    spinner.spinner = {
-        interval: 60,
-        frames: ['|', '/', '-', '\\', '\\'],
-    };
+    spinner.text = `${chalk.yellow('欢迎使用数睿科技addcn-cli脚手架')}`;
+
     try {
-        // 检查当前脚手架的版本
+        // 1.检查当前脚手架的版本
         const bool = await localCheckPkgVersion();
 
-        // spinner.text = '';
         spinner.succeed();
 
         if (!bool) return;
 
-        // 检查当前运行的 node 版本
+        // 2.检查当前运行的 node 版本
         checkNodeVersion(LOWEST_NODE_VERSION);
 
-        // 获取当前所有参数
+        // 3.获取当前所有参数
         const grgs = getInputArgs();
-        console.log(grgs, 'grgs');
+        console.log(grgs, '参数');
 
-        // 注册命令
+        // 4.注册命令
         registerCommand();
 
         // 停止ora
         spinner.stop();
     } catch (error) {
-        console.log(error, 111);
         spinner.stop();
-        npmlog.error('error', chalk.red(error.message));
+        npmlog.error('error', chalk.red(error));
+        getHelpDocument();
     }
 }
 
@@ -65,13 +63,14 @@ const registerCommand = () => {
     // program.exitOverride();
 
     // 初始化帮助信息
-    getHelpDocument();
+    // getHelpDocument();
 
     // 初始化命令
     program
         .command('init')
         .description('初始化脚手架')
         .action(async () => {
+            init();
             npmlog.success('success', '初始化完成');
         });
 
@@ -171,7 +170,11 @@ const localCheckPkgVersion = async () => {
         });
 
         // console.log(isUpdateCli, 'isUpdateCli');
-        if (isUpdateCli) npmlog.info('info', 'start update addcn-cli');
+        if (isUpdateCli) {
+            // child_process.exec(`npm install -g @addcn-cli/core@latest`);
+            child_process.exec(`npm view @addcn-cli/core version`);
+            npmlog.info('info', 'start update addcn-cli');
+        }
 
         return !isUpdateCli;
     }
