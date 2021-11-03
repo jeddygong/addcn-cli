@@ -64,11 +64,12 @@ export const checkNodeVersion = (version: string) => {
 
 /**
  * 检查当前的 package 包版本大小
- * @param version 当前 package 包的版本
+ * @param version 当前本地 package 包的版本
+ * @param pkgName 当前 package 包的name
  */
-export const checkPkgVersion = async (version: string) => {
+export const checkPkgVersion = async (version: string, pkgName: string) => {
     // 1. 获取线上的最新包的版本号
-    const latestVersion = await getLatestVersion('@addcn-cli/core');
+    const latestVersion = await getLatestVersion(pkgName);
     // console.log(version, latestVersion, 'version');
 
     // 2. 对比一下当前包的版本是否小于线上版本

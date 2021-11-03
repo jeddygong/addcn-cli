@@ -7,7 +7,12 @@
 import npmlog from './npmlog';
 import inquirer from './inquirer';
 import spinner from './spinner';
-import { checkNodeVersion, checkPkgVersion, getInputArgs } from './utils';
+import {
+    checkNodeVersion,
+    checkPkgVersion,
+    getInputArgs,
+    getLatestVersion,
+} from './utils';
 
 const utils = () => {
     // TODO
@@ -22,5 +27,6 @@ export {
     checkNodeVersion,
     checkPkgVersion,
     getInputArgs,
+    getLatestVersion,
     spinner,
 };

@@ -38,6 +38,7 @@
   "gitHead": "b3e592e1e857e6b01f1270e2d8ddbd08428dc8ee",
   "devDependencies": {
     "@addcn-cli/utils": "file:../utils",
+    "@addcn-cli/template": "file:../template",
     "@types/fs-extra": "^9.0.12",
     "chalk": "^4.1.2",
     "commander": "^8.1.0",

@@ -20,6 +20,7 @@ import {
 // 方法引入
 import { clone } from './clone';
 import { init } from './init';
+import { create } from './create';
 import pkgConfig from '../package.json';
 
 import CONST_CONFIG from './config';
@@ -76,11 +77,15 @@ const registerCommand = () => {
 
     // 创建项目命令
     program
-        .command('create <app-name>')
+        .command('create <app-name> [options]')
         .description('创建一个新项目')
         .option('-f, --force', '强制更新所有缓存信息')
-        .action(async () => {
-            npmlog.success('success', '创建一个新项目完成');
+        .action(async (appName, options) => {
+            console.log(appName, options, 'appName');
+            // 1. 检查模板是不是最新版本的
+
+            // 2. 开始创建
+            create({ appName });
         });
 
     // 下载远程仓库至本地
@@ -152,6 +157,7 @@ const getHelpDocument = () => {
 const localCheckPkgVersion = async () => {
     const { isUpdate, currentVersion, latestVersion } = await checkPkgVersion(
         pkgConfig.version,
+        '@addcn-cli/core',
     );
     // console.log(isUpdate, 'result');
     if (!isUpdate) {
