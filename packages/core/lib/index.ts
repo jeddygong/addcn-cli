@@ -23,8 +23,7 @@ import { init } from './init';
 import { create } from './create';
 import pkgConfig from '../package.json';
 
-import CONST_CONFIG from './config';
-const { LOWEST_NODE_VERSION } = CONST_CONFIG;
+import { LOWEST_NODE_VERSION } from './config';
 
 async function cli() {
     spinner.text = `${chalk.yellow('欢迎使用数睿科技addcn-cli脚手架')}`;
@@ -80,8 +79,8 @@ const registerCommand = () => {
         .command('create <app-name> [options]')
         .description('创建一个新项目')
         .option('-f, --force', '强制更新所有缓存信息')
-        .action(async (appName, options) => {
-            console.log(appName, options, 'appName');
+        .action(async (appName) => {
+            // console.log(appName, options, 'appName');
             // 1. 检查模板是不是最新版本的
 
             // 2. 开始创建

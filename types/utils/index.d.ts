@@ -25,7 +25,7 @@ declare module '@addcn-cli/utils' {
     interface IParameters {
         type: string;
         name?: string;
-        choices?: [];
+        choices?: { name:string, value:string }[];
         default?: string | number | undefined | null;
         defaultValue?: string | number | undefined | null | boolean;
         message: string;
