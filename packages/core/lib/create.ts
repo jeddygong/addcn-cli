@@ -37,8 +37,8 @@ export const create = async ({ appName }: ICreateParams) => {
     };
     const answers = (await inquirer(tmplList)) as string;
 
-    // 模板下载
     spinner.start(`${chalk.yellow(`正在创建${answers}模板项目`)}`);
+    // 模板下载
     switch (answers) {
         case 'vue2':
             // 复制缓存模板中的vue2模板

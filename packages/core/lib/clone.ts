@@ -9,16 +9,17 @@ import download from 'download-git-repo';
 import chalk from 'chalk';
 import { npmlog, spinner } from '@addcn-cli/utils';
 
-export const clone = (url: string, appName: string, options: any) => {
-    console.log(url, appName, options, 'start clone');
+export interface ICloneParams {
+    url: string;
+    appName: string;
+    options: any;
+}
 
-    // const spinner = ora(
-    //     `${chalk.yellow('正在使用addcn-cli脚手架克隆远程仓库项目至本地')}`,
-    // );
-    // spinner.indent = 2;
+export const clone = ({ url, appName, options }: ICloneParams) => {
+    npmlog.info('info', `${url}--${appName}--${options} start create project`);
 
     try {
-        spinner.start();
+        spinner.start(`${chalk.yellow(`准备克隆`)}`);
 
         // 1. 检测当前的url
         const reg = new RegExp(
@@ -28,28 +29,29 @@ export const clone = (url: string, appName: string, options: any) => {
         // 1.1 判断处理
         if (!reg.test(url)) {
             throw new Error(
-                '请输入正确的<url>链接格式: (github|gitlab|bitbucket):owner/name',
+                '请输入正确的<url>链接格式: (github|gitlab|bitbucket):owner/name#branch',
             );
         }
 
         // 2. 开始克隆
         download(url, appName, (err) => {
-            spinner.stop();
+            spinner.start(`${chalk.yellow(`正在克隆中......`)}`);
             try {
                 if (err) {
                     throw new Error(
                         `克隆出错了，请确保：
-1. 仓库名正确；
-2. 仓库分支已存在（默认master，修改分支eg:(github|gitlab|bitbucket):owner/name#branch）`,
+1. 请确保仓库名正确；
+2. 请确保仓库分支已存在（默认master，修改分支eg:(github|gitlab|bitbucket):owner/name#branch）`,
                     );
                 }
-
                 // 开始克隆
-                npmlog.success('success', `克隆完成，已克隆至${appName}目录下`);
+                spinner.succeed(
+                    `${chalk.green(`克隆成功，已克隆至${appName}目录下`)}`,
+                );
             } catch (error) {
+                spinner.stop();
                 npmlog.error('error', chalk.red(error));
             }
-            // console.log(err ? 'Error' : 'Success', JSON.stringify(err));
         });
     } catch (error) {
         spinner.stop();

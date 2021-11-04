@@ -87,7 +87,7 @@ const registerCommand = () => {
             create({ appName });
         });
 
-    // 下载远程仓库至本地
+    // 下载远程仓库至本地，这个可以放在下一个版本迭代
     program
         .command('inistall <url>')
         .description('安装一个「模板插件包」到当前脚手架') // 把这个模板插件包下载到硬盘
@@ -102,7 +102,7 @@ const registerCommand = () => {
         .description('克隆github/gitlab上的项目模板至当前目录')
         .option('-f, --force', '强制更新所有缓存信息')
         .action(async (url, appName, options) => {
-            clone(url, appName, options);
+            clone({ url, appName, options });
         });
 
     // 使program返回的错误信息是空
