@@ -14,7 +14,7 @@ const root = homedir();
 // }
 
 // 支持的node最低版本
-export const LOWEST_NODE_VERSION = '10.0.0';
+export const LOWEST_NODE_VERSION = '12.0.0';
 
 // 模板路径
 export const TEMPLATE_PATH = `${root}/.addcn_cli_templates`;

@@ -32,7 +32,7 @@ async function cli() {
         // 1.检查当前脚手架的版本
         const bool = await localCheckPkgVersion();
 
-        spinner.succeed();
+        spinner.clear();
 
         if (!bool) return;
 
@@ -40,8 +40,9 @@ async function cli() {
         checkNodeVersion(LOWEST_NODE_VERSION);
 
         // 3.获取当前所有参数
-        const grgs = getInputArgs();
-        console.log(grgs, '参数');
+        getInputArgs();
+        // const grgs = getInputArgs();
+        // console.log(grgs, '参数');
 
         // 4.注册命令
         registerCommand();
@@ -63,7 +64,7 @@ const registerCommand = () => {
     // program.exitOverride();
 
     // 初始化帮助信息
-    // getHelpDocument();
+    getHelpDocument();
 
     // 初始化命令
     program
@@ -71,7 +72,6 @@ const registerCommand = () => {
         .description('初始化脚手架')
         .action(async () => {
             init();
-            npmlog.success('success', '初始化完成');
         });
 
     // 创建项目命令
@@ -90,10 +90,13 @@ const registerCommand = () => {
     // 下载远程仓库至本地，这个可以放在下一个版本迭代
     program
         .command('inistall <url>')
-        .description('安装一个「模板插件包」到当前脚手架') // 把这个模板插件包下载到硬盘
+        .description('安装一个自定义「模板插件包」到当前脚手架模板目录') // 把这个模板插件包下载到硬盘
         .option('-f, --force', '强制更新所有缓存信息')
         .action(async () => {
-            npmlog.success('success', '安装一个「模板插件包」到当前脚手架完成');
+            npmlog.success(
+                'success',
+                '安装一个「模板插件包」到当前模板缓存目录脚手架',
+            );
         });
 
     // 克隆仓库中的项目
@@ -139,14 +142,14 @@ const getHelpDocument = () => {
     program.addHelpText(
         'afterAll',
         `
-  Run ${chalk.green(
-      'addcn-cli <command> --help',
-  )} for detailed usage of given command
-  `,
+Run ${chalk.green(
+            'addcn-cli <command> --help',
+        )} for detailed usage of given command
+      `,
     );
 
     // 没有命令的时候，输出帮助文档
-    program.outputHelp();
+    // program.outputHelp();
 };
 
 /**

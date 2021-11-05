@@ -44,7 +44,6 @@ export const clone = ({ url, appName, options }: ICloneParams) => {
 2. 请确保仓库分支已存在（默认master，修改分支eg:(github|gitlab|bitbucket):owner/name#branch）`,
                     );
                 }
-                // 开始克隆
                 spinner.succeed(
                     `${chalk.green(`克隆成功，已克隆至${appName}目录下`)}`,
                 );
