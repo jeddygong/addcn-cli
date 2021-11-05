@@ -159,10 +159,10 @@ Run ${chalk.green(
 const localCheckPkgVersion = async () => {
     const { isUpdate, currentVersion, latestVersion } = await checkPkgVersion(
         pkgConfig.version,
-        '@addcn-cli/core',
+        pkgConfig.name,
     );
     // console.log(isUpdate, 'result');
-    if (!isUpdate) {
+    if (isUpdate) {
         npmlog.error(
             'error',
             chalk.red(
@@ -177,7 +177,6 @@ const localCheckPkgVersion = async () => {
             message: `是否更新addcn-cli脚手架最新版(${latestVersion}) ？`,
         });
 
-        // console.log(isUpdateCli, 'isUpdateCli');
         if (isUpdateCli) {
             // child_process.exec(`npm install -g @addcn-cli/core@latest`);
             child_process.exec(`npm view @addcn-cli/core version`);

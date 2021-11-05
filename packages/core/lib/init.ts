@@ -11,24 +11,23 @@ import fse from 'fs-extra';
 import { TEMPLATE_PATH } from './config';
 import { npmlog, spinner, inquirer, checkPkgVersion } from '@addcn-cli/utils';
 
-const fsPromises = fs.promises;
-
 export const init = async () => {
     // 1. 检查本地缓存目录，是否存在该模板
     const isExists = fs.existsSync(TEMPLATE_PATH);
 
     // 2. 如果已经下载，则检查当前版本是否需要更新
     if (isExists) {
-        const { isUpdate, currentVersion, latestVersion } =
-            await checkPkgVersion('0.0.1', 'addcn-template');
-        console.log(
-            isUpdate,
-            currentVersion,
-            latestVersion,
-            '开始检查版本是否需要更新',
+        // 获取模板本地配置
+        const tmplPkg = require(`${TEMPLATE_PATH}/package.json`);
+
+        const { isUpdate, latestVersion } = await checkPkgVersion(
+            tmplPkg.version,
+            'addcn-template',
         );
-        // if (getVersion)
-        // 显示提示消息，是否更新
+
+        // 判断是否更新
+        if (!isUpdate) return;
+
         const isUpdateTemp = await inquirer({
             type: 'confirm',
             name: 'isUpdateTemp',
@@ -39,32 +38,29 @@ export const init = async () => {
         if (isUpdateTemp) {
             // 删除目录下的子文件
             await fse.emptyDir(TEMPLATE_PATH);
+
             // 删除目录
             fs.rmdirSync(TEMPLATE_PATH);
 
             // 开始下载最新的模板
-            downloadTemplate();
-
-            npmlog.info('info', 'addcn-template update successfully');
+            downloadTemplate(`update`);
         }
 
         return;
     }
 
-    // 3. 如果没有下载，则创建addcn_cli_templates目录
-    await fsPromises.mkdir(TEMPLATE_PATH);
-
-    // 4. 开始下载该模板至addcn_cli_templates目录
-    downloadTemplate();
+    // 3. 开始下载该模板至addcn_cli_templates目录
+    downloadTemplate(`init`);
 };
 
 /**
  * 下载模板
- * @param root 根路径
+ * @param {string} text 提示
+ * @return void
  */
-const downloadTemplate = () => {
+const downloadTemplate = (text: string): void => {
+    spinner.start(`${chalk.yellow(`${text} template...`)}`);
     download('github:jeddygong/addcn-template#main', TEMPLATE_PATH, (err) => {
-        spinner.start(`${chalk.yellow(`初始化模板中...`)}`);
         try {
             if (err) {
                 throw new Error(
@@ -75,7 +71,7 @@ const downloadTemplate = () => {
             }
 
             // 开始克隆
-            spinner.succeed(`${chalk.green(`初始化模板成功`)}`);
+            spinner.succeed(`${chalk.green(`template ${text} successfully`)}`);
         } catch (error) {
             spinner.stop();
             npmlog.error('error', chalk.red(error));

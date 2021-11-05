@@ -84,7 +84,7 @@ export const checkPkgVersion = async (version: string, pkgName: string) => {
         //         更新命令： npm install -g ${NPM_NAME}`));
 
         return {
-            isUpdate: false,
+            isUpdate: true,
             currentVersion: version,
             latestVersion: latestVersion.trim(),
         };
@@ -95,7 +95,7 @@ export const checkPkgVersion = async (version: string, pkgName: string) => {
     // npmlog.success('欢迎使用数睿科技addcn-cli脚手架');
 
     return {
-        isUpdate: true,
+        isUpdate: false,
         currentVersion: version,
         latestVersion: latestVersion.trim(),
     };
