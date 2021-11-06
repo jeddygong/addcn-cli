@@ -11,7 +11,7 @@ import minimist from 'minimist';
 // import shell from 'shelljs';
 import child_process from 'child_process';
 
-import npmlog from './npmlog';
+// import npmlog from './npmlog';
 import spinner from './spinner';
 
 /**
@@ -67,13 +67,16 @@ export const checkNodeVersion = (version: string) => {
  * @param version 当前本地 package 包的版本
  * @param pkgName 当前 package 包的name
  */
-export const checkPkgVersion = async (version: string, pkgName: string) => {
+export const checkPkgVersion = async (
+    currentVersion: string,
+    pkgName: string,
+) => {
     // 1. 获取线上的最新包的版本号
     const latestVersion = await getLatestVersion(pkgName);
     // console.log(version, latestVersion, 'version');
 
     // 2. 对比一下当前包的版本是否小于线上版本
-    if (!semver.gte(version, latestVersion)) {
+    if (!semver.gte(currentVersion, latestVersion)) {
         // throw npmlog.error(
         //     'error',
         //     chalk.red(`您当前的脚手架版本过低，建议您安装最新的版本`),
@@ -85,18 +88,18 @@ export const checkPkgVersion = async (version: string, pkgName: string) => {
 
         return {
             isUpdate: true,
-            currentVersion: version,
+            currentVersion,
             latestVersion: latestVersion.trim(),
         };
     }
 
     // 2. 提示日志输出
-    npmlog.notice('addcn-cli version:', version);
+    // npmlog.notice('addcn-cli version:', currentVersion);
     // npmlog.success('欢迎使用数睿科技addcn-cli脚手架');
 
     return {
         isUpdate: false,
-        currentVersion: version,
+        currentVersion,
         latestVersion: latestVersion.trim(),
     };
 };

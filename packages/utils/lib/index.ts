@@ -7,6 +7,7 @@
 import npmlog from './npmlog';
 import inquirer from './inquirer';
 import spinner from './spinner';
+import exec from './exec';
 import {
     checkNodeVersion,
     checkPkgVersion,
@@ -29,4 +30,5 @@ export {
     getInputArgs,
     getLatestVersion,
     spinner,
+    exec,
 };

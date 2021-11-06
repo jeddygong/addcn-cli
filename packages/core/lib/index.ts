@@ -7,7 +7,6 @@
 // 工具库
 import { program } from 'commander';
 import chalk from 'chalk';
-import child_process from 'child_process';
 import {
     npmlog,
     inquirer,
@@ -15,6 +14,7 @@ import {
     checkPkgVersion,
     getInputArgs,
     spinner,
+    exec,
 } from '@addcn-cli/utils';
 
 // 方法引入
@@ -82,7 +82,7 @@ const registerCommand = () => {
         .action(async (appName) => {
             // console.log(appName, options, 'appName');
             // 1. 检查模板是不是最新版本的
-
+            await init();
             // 2. 开始创建
             create({ appName });
         });
@@ -157,36 +157,43 @@ Run ${chalk.green(
  * @returns Promise<boolean>
  */
 const localCheckPkgVersion = async () => {
-    const { isUpdate, currentVersion, latestVersion } = await checkPkgVersion(
-        pkgConfig.version,
-        pkgConfig.name,
-    );
-    // console.log(isUpdate, 'result');
-    if (isUpdate) {
-        npmlog.error(
-            'error',
-            chalk.red(
-                `您当前的脚手架版本(${currentVersion})过低，建议您安装最新的版本(${latestVersion})`,
-            ),
-        );
-        // 显示提示消息，是否更新
-        const isUpdateCli = await inquirer({
-            type: 'confirm',
-            name: 'isUpdateCli',
-            defaultValue: false,
-            message: `是否更新addcn-cli脚手架最新版(${latestVersion}) ？`,
-        });
+    try {
+        const { isUpdate, currentVersion, latestVersion } =
+            await checkPkgVersion(pkgConfig.version, pkgConfig.name);
 
-        if (isUpdateCli) {
-            // child_process.exec(`npm install -g @addcn-cli/core@latest`);
-            child_process.exec(`npm view @addcn-cli/core version`);
-            npmlog.info('info', 'start update addcn-cli');
+        npmlog.notice('addcn-cli version:', currentVersion);
+
+        if (isUpdate) {
+            npmlog.warn(
+                'warn',
+                chalk.red(
+                    `您当前的脚手架版本(v${currentVersion})过低，建议您更新最新的版本(v${latestVersion})`,
+                ),
+            );
+            // 显示提示消息，是否更新
+            const isUpdateCli = await inquirer({
+                type: 'confirm',
+                name: 'isUpdateCli',
+                defaultValue: true,
+                message: `是否更新addcn-cli脚手架最新版本(v${latestVersion}) ？`,
+            });
+
+            if (isUpdateCli) {
+                spinner.start(`${chalk.yellow(`update cli...`)}`);
+                await exec('npm install -g @addcn-cli/core@latest');
+                spinner.succeed(
+                    `${chalk.green(`addcn-cli update successfully`)}`,
+                );
+            }
+
+            return !isUpdateCli;
         }
 
-        return !isUpdateCli;
+        return true;
+    } catch (error) {
+        spinner.stop();
+        npmlog.error('error', chalk.red(error));
     }
-
-    return true;
 };
 
 export default cli;

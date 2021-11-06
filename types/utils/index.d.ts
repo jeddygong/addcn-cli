@@ -41,7 +41,7 @@ declare module '@addcn-cli/utils' {
         currentVersion: string;
         latestVersion: string;
     }
-    export function checkPkgVersion(version:string, pkgName: string): Promise<IPkgVersion>;
+    export function checkPkgVersion(currentVersion:string, pkgName: string): Promise<IPkgVersion>;
 
     interface IInputArgs {
         [key:string]: any
@@ -49,6 +49,8 @@ declare module '@addcn-cli/utils' {
     export function getInputArgs(): IInputArgs;
 
     export function getLatestVersion(pkgName: string): Promise<string>;
+
+    export function exec(command: string):  Promise<string> ;
 
     // ora 类型补充
     export const spinner: ora.Ora;
