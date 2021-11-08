@@ -25,14 +25,16 @@ declare module '@addcn-cli/utils' {
     interface IParameters {
         type: string;
         name?: string;
-        choices?: { name:string, value:string }[];
-        default?: string | number | undefined | null;
+        choices?: { name:string, value:string | number }[];
+        default?: string | number | undefined | null | string[];
         defaultValue?: string | number | undefined | null | boolean;
         message: string;
         require?: boolean;
         mask?: string;
     }
     export function inquirer(params:IParameters): Promise<T>;
+    // ora 类型补充
+    // export const inquirer: inquirer;
 
     export function checkNodeVersion(version:string): void;
 

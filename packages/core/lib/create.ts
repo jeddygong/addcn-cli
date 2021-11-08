@@ -8,6 +8,11 @@ import chalk from 'chalk';
 import fse from 'fs-extra';
 import { TEMPLATE_PATH } from './config';
 import { npmlog, inquirer, spinner } from '@addcn-cli/utils';
+import {
+    addTypescriptExtend,
+    addPrettierExtend,
+    addCZAndHuskyExtend,
+} from './createExtend';
 
 export interface ICreateParams {
     appName: string;
@@ -35,23 +40,31 @@ export const create = async ({ appName }: ICreateParams) => {
         // default: 1,
         choices: tmpls,
     };
-    const answers = (await inquirer(tmplList)) as string;
+    const typeValue = (await inquirer(tmplList)) as string;
 
-    spinner.start(`${chalk.yellow(`正在创建${answers}模板项目`)}`);
+    // spinner.start(`${chalk.yellow(`正在创建${typeValue}模板项目`)}`);
     // 模板下载
-    switch (answers) {
+    switch (typeValue) {
         case 'vue2':
+            // eslint-disable-next-line no-case-declarations
+            const nowExtend = await getExtendType();
+            console.log(nowExtend, 'nowExtend');
+
             // 复制缓存模板中的vue2模板
-            await fse.copySync(
-                `${TEMPLATE_PATH}/templates/${answers}`,
+            await fse.copy(
+                `${TEMPLATE_PATH}/templates/${typeValue}`,
                 `./${appName}`,
             );
+
+            // 添加对应的插件至模板中
+            await addExtendToProject(nowExtend, appName);
+
             spinner.succeed(`${chalk.yellow('创建成功')}`);
             break;
         case 'vue3':
             // 复制缓存模板中的vue3模板
-            await fse.copySync(
-                `${TEMPLATE_PATH}/templates/${answers}`,
+            await fse.copy(
+                `${TEMPLATE_PATH}/templates/${typeValue}`,
                 `./${appName}`,
             );
             spinner.succeed(`${chalk.yellow('创建成功')}`);
@@ -59,7 +72,7 @@ export const create = async ({ appName }: ICreateParams) => {
         case 'vite-vue3':
             // 复制缓存模板中的vite-vue3模板
             await fse.copySync(
-                `${TEMPLATE_PATH}/templates/${answers}`,
+                `${TEMPLATE_PATH}/templates/${typeValue}`,
                 `./${appName}`,
             );
             spinner.succeed(`${chalk.yellow('创建成功')}`);
@@ -67,7 +80,7 @@ export const create = async ({ appName }: ICreateParams) => {
         case 'vite-vue3-ts':
             // 复制缓存模板中的vite-vue3-ts模板
             await fse.copySync(
-                `${TEMPLATE_PATH}/templates/${answers}`,
+                `${TEMPLATE_PATH}/templates/${typeValue}`,
                 `./${appName}`,
             );
             spinner.succeed(`${chalk.yellow('创建成功')}`);
@@ -75,7 +88,7 @@ export const create = async ({ appName }: ICreateParams) => {
         case 'react':
             // 复制缓存模板中的react模板
             await fse.copySync(
-                `${TEMPLATE_PATH}/templates/${answers}`,
+                `${TEMPLATE_PATH}/templates/${typeValue}`,
                 `./${appName}`,
             );
             spinner.succeed(`${chalk.yellow('创建成功')}`);
@@ -83,7 +96,7 @@ export const create = async ({ appName }: ICreateParams) => {
         case 'koa2':
             // 复制缓存模板中的koa2模板
             await fse.copySync(
-                `${TEMPLATE_PATH}/templates/${answers}`,
+                `${TEMPLATE_PATH}/templates/${typeValue}`,
                 `./${appName}`,
             );
             spinner.succeed(`${chalk.yellow('创建成功')}`);
@@ -91,10 +104,49 @@ export const create = async ({ appName }: ICreateParams) => {
         case 'express':
             // 复制缓存模板中的express模板
             await fse.copySync(
-                `${TEMPLATE_PATH}/templates/${answers}`,
+                `${TEMPLATE_PATH}/templates/${typeValue}`,
                 `./${appName}`,
             );
             spinner.succeed(`${chalk.yellow('创建成功')}`);
             break;
+    }
+};
+
+const getExtendType = async (): Promise<Array<string>> => {
+    // 扩展插件
+    const tmplExtend = {
+        type: 'checkbox', // rowlist， 会多一个序号和answer
+        name: 'extendArray',
+        message: '[多选]是否需要添加以下配置？',
+        // default: 'eslint', // 默认选中 eslint
+        choices: [
+            { value: 'eslint', name: 'eslint' },
+            { value: 'typescript', name: 'typescript' },
+            { value: 'prettier', name: 'prettier' },
+            {
+                value: 'commitizen',
+                name: 'commitizen + husky(规范 git 提交)',
+            },
+        ],
+    };
+    const extendArray = await inquirer(tmplExtend);
+
+    console.log(extendArray, 'checkboxs');
+    return extendArray;
+};
+
+const addExtendToProject = async (
+    nowExtend: Array<string> | string,
+    url: string,
+) => {
+    console.log(nowExtend, url, 'addExtendToProject');
+    if (nowExtend.includes('typescript')) {
+        await addTypescriptExtend(url);
+    }
+    if (nowExtend.includes('prettier')) {
+        await addPrettierExtend(url);
+    }
+    if (nowExtend.includes('commitizen')) {
+        await addCZAndHuskyExtend(url);
     }
 };

@@ -4,11 +4,11 @@
  * @create 2021-08-31 19:33:18
  */
 
-import inquirer from 'inquirer';
+import cusInquirer from 'inquirer';
 
 interface IParameters {
     type: string;
-    name?: string;
+    name: string;
     choices?: [];
     default?: string | number | undefined | null;
     defaultValue?: string | number | undefined | null | boolean;
@@ -17,27 +17,36 @@ interface IParameters {
     mask?: string;
 }
 
-export default function ({
+const inquirer = cusInquirer;
+
+// export default inquirer;
+
+export default async function ({
+    type = 'list',
+    name,
     choices = [],
     defaultValue,
     message,
-    type = 'list',
     require = true,
     mask = '*',
 }: IParameters) {
     const options = {
         type,
-        name: 'name',
+        name,
         message,
         default: defaultValue,
         require,
         mask,
-        choices: [],
+        choices,
     };
-    if (type === 'list') {
-        options.choices = choices;
-    }
+    // if (type === 'list') {
+    //     options.choices = choices;
+    // }
     // console.log(inquirer, 'inquirer');
 
-    return inquirer.prompt([options]).then((answer) => answer.name);
+    const nowOpt = await inquirer.prompt([options]);
+
+    return nowOpt[options.name];
+
+    // return inquirer.prompt([options]).then((answer) => answer.name);
 }
