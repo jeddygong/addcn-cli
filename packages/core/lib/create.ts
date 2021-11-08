@@ -118,7 +118,7 @@ const getExtendType = async (): Promise<Array<string>> => {
         type: 'checkbox', // rowlist， 会多一个序号和answer
         name: 'extendArray',
         message: '[多选]是否需要添加以下配置？',
-        // default: 'eslint', // 默认选中 eslint
+        default: 'eslint', // 默认选中 eslint
         choices: [
             { value: 'eslint', name: 'eslint' },
             { value: 'typescript', name: 'typescript' },

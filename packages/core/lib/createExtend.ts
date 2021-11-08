@@ -88,17 +88,17 @@ export const addTypescriptExtend = async (url: string) => {
     packageJson.devDependencies['@types/node'] = '^15.12.5';
     packageJson.devDependencies['@typescript-eslint/eslint-plugin'] = '^4.28.1';
     packageJson.devDependencies['@typescript-eslint/parser'] = '4.28.1';
-    console.log(packageJson, 'packageJson');
+    // console.log(packageJson, 'packageJson');
     // 4.2 写入至 package.json
     fs.writeFileSync(
-        `./${url}/test.json`,
+        `./${url}/package.json`,
         JSON.stringify(packageJson, null, '\t'),
         {
             encoding: 'utf-8',
         },
     );
 
-    // 开始执行命令
+    // 开始执行命令，执行npx tsc init，初始化ts
 
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     // const readPkg = require(pathJson);
@@ -173,7 +173,7 @@ export const addPrettierExtend = async (url: string) => {
     packageJson.devDependencies['prettier'] = '^2.3.2';
     packageJson.devDependencies['eslint-config-prettier'] = '^8.3.0';
     packageJson.devDependencies['eslint-plugin-prettier'] = '^3.4.0';
-    console.log(packageJson, 'packageJson');
+    // console.log(packageJson, 'packageJson');
     // 4.2 写入至 package.json
     fs.writeFileSync(
         `./${url}/test.json`,
@@ -290,11 +290,15 @@ export const addCZAndHuskyExtend = async (url: string) => {
     packageJson.devDependencies['@commitlint/config-conventional'] = '^12.1.4';
     packageJson.devDependencies['cz-customizable'] = '^6.3.0';
     packageJson.devDependencies['husky'] = '^7.0.0';
-    console.log(packageJson, 'packageJson');
+    // console.log(packageJson, 'packageJson');
     // 4.2 写入至 package.json
-    fs.writeFileSync('./test.json', JSON.stringify(packageJson, null, '\t'), {
-        encoding: 'utf-8',
-    });
+    fs.writeFileSync(
+        `./${url}/package.json`,
+        JSON.stringify(packageJson, null, '\t'),
+        {
+            encoding: 'utf-8',
+        },
+    );
 
     // 复制 husky 至当前项目
     const huskyPath = path.join(__dirname, '../../../../.husky');
