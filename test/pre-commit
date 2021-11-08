@@ -1,8 +1,0 @@
-#!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
-
-# 执行 eslint 格式化代码
-npm run eslint
-
-# 执行 prettier 格式化代码
-npm run prettier
