@@ -6,9 +6,26 @@
 
 import child_process from 'child_process';
 
-export default function (command: string): Promise<string> {
+// interface IOptions {
+//     cwd?: string;
+//     env?: string;
+//     encoding?: string;
+//     shell?: string;
+//     signal?: string;
+//     timeout?: number;
+//     maxBuffer?: number;
+//     killSignal?: string;
+//     uid?: number;
+//     gid?: number;
+//     windowsHide?: boolean;
+// }
+
+export default function (
+    command: string,
+    options: child_process.ExecOptions,
+): Promise<string> {
     return new Promise((resolve, reject) => {
-        child_process.exec(command, function (err, stdout) {
+        child_process.exec(command, options, function (err, stdout) {
             // console.log(err, stdout, stderr);
             if (err) reject(err);
             resolve(stdout);

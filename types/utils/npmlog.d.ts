@@ -6,7 +6,7 @@
 
 import { EventEmitter } from 'events';
 
-namespace npmlog {
+declare namespace npmlog {
     // TODO: newStream, newGroup, setGaugeTemplate and setGaugeTemplateSet need to be added
     interface Logger extends EventEmitter {
         (): any;

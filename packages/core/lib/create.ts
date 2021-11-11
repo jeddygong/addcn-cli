@@ -48,7 +48,8 @@ export const create = async ({ appName }: ICreateParams) => {
         case 'vue2':
             // eslint-disable-next-line no-case-declarations
             const nowExtend = await getExtendType();
-            console.log(nowExtend, 'nowExtend');
+            // console.log(nowExtend, 'nowExtend');
+            spinner.start(`${chalk.yellow(`正在创建${typeValue}模板项目`)}`);
 
             // 复制缓存模板中的vue2模板
             await fse.copy(
@@ -59,6 +60,7 @@ export const create = async ({ appName }: ICreateParams) => {
             // 添加对应的插件至模板中
             await addExtendToProject(nowExtend, appName);
 
+            // spinner.clear();
             spinner.succeed(`${chalk.yellow('创建成功')}`);
             break;
         case 'vue3':
@@ -71,7 +73,7 @@ export const create = async ({ appName }: ICreateParams) => {
             break;
         case 'vite-vue3':
             // 复制缓存模板中的vite-vue3模板
-            await fse.copySync(
+            await fse.copy(
                 `${TEMPLATE_PATH}/templates/${typeValue}`,
                 `./${appName}`,
             );
@@ -79,7 +81,7 @@ export const create = async ({ appName }: ICreateParams) => {
             break;
         case 'vite-vue3-ts':
             // 复制缓存模板中的vite-vue3-ts模板
-            await fse.copySync(
+            await fse.copy(
                 `${TEMPLATE_PATH}/templates/${typeValue}`,
                 `./${appName}`,
             );
@@ -87,7 +89,7 @@ export const create = async ({ appName }: ICreateParams) => {
             break;
         case 'react':
             // 复制缓存模板中的react模板
-            await fse.copySync(
+            await fse.copy(
                 `${TEMPLATE_PATH}/templates/${typeValue}`,
                 `./${appName}`,
             );
@@ -95,7 +97,7 @@ export const create = async ({ appName }: ICreateParams) => {
             break;
         case 'koa2':
             // 复制缓存模板中的koa2模板
-            await fse.copySync(
+            await fse.copy(
                 `${TEMPLATE_PATH}/templates/${typeValue}`,
                 `./${appName}`,
             );
@@ -103,7 +105,7 @@ export const create = async ({ appName }: ICreateParams) => {
             break;
         case 'express':
             // 复制缓存模板中的express模板
-            await fse.copySync(
+            await fse.copy(
                 `${TEMPLATE_PATH}/templates/${typeValue}`,
                 `./${appName}`,
             );
@@ -118,9 +120,9 @@ const getExtendType = async (): Promise<Array<string>> => {
         type: 'checkbox', // rowlist， 会多一个序号和answer
         name: 'extendArray',
         message: '[多选]是否需要添加以下配置？',
-        default: 'eslint', // 默认选中 eslint
+        // default: 'eslint', // 默认选中 eslint
         choices: [
-            { value: 'eslint', name: 'eslint' },
+            // { value: 'eslint', name: 'eslint' },
             { value: 'typescript', name: 'typescript' },
             { value: 'prettier', name: 'prettier' },
             {
@@ -131,7 +133,7 @@ const getExtendType = async (): Promise<Array<string>> => {
     };
     const extendArray = await inquirer(tmplExtend);
 
-    console.log(extendArray, 'checkboxs');
+    // console.log(extendArray, 'checkboxs');
     return extendArray;
 };
 
@@ -139,7 +141,7 @@ const addExtendToProject = async (
     nowExtend: Array<string> | string,
     url: string,
 ) => {
-    console.log(nowExtend, url, 'addExtendToProject');
+    // console.log(nowExtend, url, 'addExtendToProject');
     if (nowExtend.includes('typescript')) {
         await addTypescriptExtend(url);
     }
