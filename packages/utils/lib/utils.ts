@@ -44,58 +44,40 @@ export const getLatestVersion = (pkgName: string): Promise<string> => {
  * 检查当前 node 版本是否合格
  * @param version 当前需要比较的版本
  */
-export const checkNodeVersion = (version: string) => {
-    // console.log('当前 node version：' + process.version);
-    // console.log('支持的 node version：' + version);
-
-    // try {
+export const checkNodeVersion = (version: string): void => {
     if (!semver.gte(process.version, version)) {
         throw new Error(
             `您的 Node.js 版本过低，addcn-cli 需要安装 v${version} 以上版本的 Node.js`,
         );
     }
-    // } catch (error) {
-    //     // npmlog.error('error', chalk.red(error));
-    //     throw new Error(
-    //         `您的 Node.js 版本过低，addcn-cli 需要安装 v${version} 以上版本的 Node.js111`,
-    //     );
-    // }
 };
 
 /**
  * 检查当前的 package 包版本大小
  * @param version 当前本地 package 包的版本
  * @param pkgName 当前 package 包的name
+ * @return {Object} IReturnCheckPkgVersion
  */
+interface IReturnCheckPkgVersion {
+    isUpdate: boolean; // 是否需要更新
+    currentVersion: string; // 本地版本
+    latestVersion: string; // 线上最新版本
+}
 export const checkPkgVersion = async (
     currentVersion: string,
     pkgName: string,
-) => {
+): Promise<IReturnCheckPkgVersion> => {
     // 1. 获取线上的最新包的版本号
     const latestVersion = await getLatestVersion(pkgName);
-    // console.log(version, latestVersion, 'version');
 
     // 2. 对比一下当前包的版本是否小于线上版本
     if (!semver.gte(currentVersion, latestVersion)) {
-        // throw npmlog.error(
-        //     'error',
-        //     chalk.red(`您当前的脚手架版本过低，建议您安装最新的版本`),
-        // );
-        // throw new Error(`您当前的脚手架版本过低，建议您安装最新的版本`);
-
-        // log.warn(colors.yellow(`请手动更新 ${NPM_NAME}，当前版本：${packageConfig.version}，最新版本：${lastVersion}
-        //         更新命令： npm install -g ${NPM_NAME}`));
-
         return {
             isUpdate: true,
             currentVersion,
             latestVersion: latestVersion.trim(),
         };
     }
-
-    // 2. 提示日志输出
-    // npmlog.notice('addcn-cli version:', currentVersion);
-    // npmlog.success('欢迎使用数睿科技addcn-cli脚手架');
 
     return {
         isUpdate: false,

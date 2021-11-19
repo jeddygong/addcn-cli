@@ -156,40 +156,36 @@ Run ${chalk.green(
  * 检查当前脚手架版本，提示是否更新
  * @returns Promise<boolean>
  */
-const localCheckPkgVersion = async () => {
+const localCheckPkgVersion = async (): Promise<boolean | undefined> => {
     try {
         const { isUpdate, currentVersion, latestVersion } =
             await checkPkgVersion(pkgConfig.version, pkgConfig.name);
 
         npmlog.notice('addcn-cli version:', currentVersion);
 
-        if (isUpdate) {
-            npmlog.warn(
-                'warn',
-                chalk.red(
-                    `您当前的脚手架版本(v${currentVersion})过低，建议您更新最新的版本(v${latestVersion})`,
-                ),
-            );
-            // 显示提示消息，是否更新
-            const isUpdateCli = await inquirer({
-                type: 'confirm',
-                name: 'isUpdateCli',
-                defaultValue: true,
-                message: `是否更新addcn-cli脚手架最新版本(v${latestVersion}) ？`,
-            });
+        if (!isUpdate) return true;
 
-            if (isUpdateCli) {
-                spinner.start(`${chalk.yellow(`update cli...`)}`);
-                await exec('npm install -g @addcn-cli/core@latest');
-                spinner.succeed(
-                    `${chalk.green(`addcn-cli update successfully`)}`,
-                );
-            }
+        npmlog.warn(
+            'warn',
+            chalk.red(
+                `您当前的脚手架版本(v${currentVersion})过低，建议您更新最新的版本(v${latestVersion})`,
+            ),
+        );
+        // 显示提示消息，是否更新
+        const isUpdateCli = (await inquirer({
+            type: 'confirm',
+            name: 'isUpdateCli',
+            defaultValue: true,
+            message: `是否更新addcn-cli脚手架最新版本(v${latestVersion}) ？`,
+        })) as boolean;
 
-            return !isUpdateCli;
+        if (isUpdateCli) {
+            spinner.start(`${chalk.yellow(`update cli...`)}`);
+            await exec('npm install -g @addcn-cli/core@latest');
+            spinner.succeed(`${chalk.green(`addcn-cli update successfully`)}`);
         }
 
-        return true;
+        return !isUpdateCli;
     } catch (error) {
         spinner.stop();
         npmlog.error('error', chalk.red(error));

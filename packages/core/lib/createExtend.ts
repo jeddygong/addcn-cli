@@ -7,6 +7,8 @@ import chalk from 'chalk';
 // import child_process from 'child_process';
 /**
  * @description 添加 typescript 的配置方法
+ * @param {string} url 当前项目的路径
+ * @return {void}
  */
 export const addTypescriptExtend = async (url: string) => {
     // console.log('这是添加typescript 的配置');
