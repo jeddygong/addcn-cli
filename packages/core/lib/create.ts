@@ -42,12 +42,16 @@ export const create = async ({ appName }: ICreateParams) => {
     };
     const typeValue = (await inquirer(tmplList)) as string;
 
+    const a =
+        'asdasfsdasasdasfasfasdasasdasfasfasdasasdasfasfasdasasdasfasfasdasasdasfasfasdasasdasfasfasfasdasasdasfasfasdasasdasfasfasdasasdasfasfasdasasdasfasfasdasasdasfasfasdasasdasfasfasdasasdasfasfasdasasdasfasfasdsfasdasasdasfasfasdasasdasfasfasdasasdasfasfasdasasdasfasfasdasasdasfasfasdasasdasfasfasdasasdasfasfasdasasdasfasfasdasfasdasasdasfasfasdasasdasfasfasdasasdasfasfasdasasdasfasfasdasasdasfasfasdasasdasfasfasdasasdasfasfasdasasdasfasfasdasasdasfasfasdasasdasfasfasdasasdasfasfasdasasdasfasfasdasasdasfasfasdasasdasfasfasdasasdasfasfasdasasdasfasfasdasasdasfasfasdasasdasfasfasdas';
+    console.log(a);
     // spinner.start(`${chalk.yellow(`正在创建${typeValue}模板项目`)}`);
     // 模板下载
     switch (typeValue) {
         case 'vue2':
             // eslint-disable-next-line no-case-declarations
             const nowExtend = await getExtendType();
+
             // console.log(nowExtend, 'nowExtend');
             spinner.start(`${chalk.yellow(`正在创建${typeValue}模板项目`)}`);
 
