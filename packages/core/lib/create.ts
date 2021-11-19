@@ -42,8 +42,7 @@ export const create = async ({ appName }: ICreateParams) => {
     };
     const typeValue = (await inquirer(tmplList)) as string;
 
-    const a =
-        'asdasfsdasasdasfasfasdasasdasfasfasdasasdasfasfasdasasdasfasfasdasasdasfasfasdasasdasfasfasfasdasasdasfasfasdasasdasfasfasdasasdasfasfasdasasdasfasfasdasasdasfasfasdasasdasfasfasdasasdasfasfasdasasdasfasfasdsfasdasasdasfasfasdasasdasfasfasdasasdasfasfasdasasdasfasfasdasasdasfasfasdasasdasfasfasdasasdasfasfasdasasdasfasfasdasfasdasasdasfasfasdasasdasfasfasdasasdasfasfasdasasdasfasfasdasasdasfasfasdasasdasfasfasdasasdasfasfasdasasdasfasfasdasasdasfasfasdasasdasfasfasdasasdasfasfasdasasdasfasfasdasasdasfasfasdasasdasfasfasdasasdasfasfasdasasdasfasfasdasasdasfasfasdasasdasfasfasdas';
+    const a = '';
     console.log(a);
     // spinner.start(`${chalk.yellow(`正在创建${typeValue}模板项目`)}`);
     // 模板下载
