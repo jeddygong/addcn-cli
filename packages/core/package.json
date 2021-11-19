@@ -1,6 +1,6 @@
 {
   "name": "@addcn-cli/core",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "input core",
   "keywords": [
     "cli",
@@ -43,6 +43,5 @@
     "commander": "^8.1.0",
     "download-git-repo": "^3.0.2",
     "fs-extra": "^10.0.0"
-  },
-  "dependencies": {}
+  }
 }
