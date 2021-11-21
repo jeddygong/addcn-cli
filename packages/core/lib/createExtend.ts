@@ -11,32 +11,7 @@ import chalk from 'chalk';
  * @return {void}
  */
 export const addTypescriptExtend = async (url: string) => {
-    // console.log('这是添加typescript 的配置');
-
-    // 下载对应的插件 typescript 和 @types/node @typescript-eslint/eslint-plugin @typescript-eslint
-    // 如果需要 parser 就下载对应的 @typescript-eslint/parser
-    // 用 npm 下载包建议使用shell.js, 因为它只能安装一个, 所以可以添加对应的版本到package.json 中去
-
-    // 前提是下载完成了
-    // 1. 进入对应的目录，并且添加对应的插件
-    // child_process.exec(
-    //     'npm i typescript @types/node @typescript-eslint/eslint-plugin @typescript-eslint -D',
-    //     (err, stdout, stderr) => {
-    //         console.log(err, stdout, stderr);
-    //     },
-    // );
-    // 用 npm 下载包建议使用shell.js, 因为它只能安装一个, 所以可以添加对应的版本到package.json 中去
-    // const execVue = child_process.spawn(
-    //     `npm`,
-    //     // typescript @types/node @typescript-eslint/eslint-plugin @typescript-eslint
-    //     [`install`, 'typescript', '-D'],
-    //     {
-    //         stdio: 'inherit',
-    //         // cwd: '/Users/gongjin/Documents/study/front-end/cli/my-cli-ts/packages/core',
-    //     },
-    // );
-
-    // 2. 添加对应的 eslint 配置
+    // 1. 添加对应的 eslint 配置
     const eslintJson = {
         root: true,
         parser: '@typescript-eslint/parser',
@@ -68,8 +43,8 @@ export const addTypescriptExtend = async (url: string) => {
         rules: {},
     };
 
-    // 3. 写入到当前项目的 json 中
-    // 3.1 两种方法可以解决输出的是格式化的json，1：直接传入``；2：JSON.stringify(eslintJson, null, '\t')
+    // 2. 写入到当前项目的 json 中
+    // 2.1 两种方法可以解决输出的是格式化的json，1：直接传入``；2：JSON.stringify(eslintJson, null, '\t')
     fs.writeFileSync(
         `./${url}/.eslintrc.json`,
         JSON.stringify(eslintJson, null, '\t'),
@@ -78,27 +53,20 @@ export const addTypescriptExtend = async (url: string) => {
         },
     );
 
-    // 4. 添加插件和命令至 json 中
-    // const pathJson = path.join(__dirname, '../package.json');
+    // 3. 添加插件和命令至 json 中
     const packageJson = JSON.parse(
         fs.readFileSync(`./${url}/package.json`, {
             encoding: 'utf-8',
         }),
     );
 
-    // 4.1 添加对应的插件
-    // typescript 和 @types/node @typescript-eslint/eslint-plugin @typescript-eslint
+    // 3.1 添加对应的插件
     packageJson.devDependencies['typescript'] = '^4.3.4';
     packageJson.devDependencies['@types/node'] = '^15.12.5';
     packageJson.devDependencies['@typescript-eslint/eslint-plugin'] = '^4.28.1';
     packageJson.devDependencies['@typescript-eslint/parser'] = '4.28.1';
-    // console.log(packageJson, 'packageJson');
 
-    // 添加执行脚本
-    // packageJson.scripts['commit:comment'] = '引导设置规范化的提交信息';
-    // packageJson.scripts['commit'] = 'git-cz';
-
-    // 4.2 写入至 package.json
+    // 3.2 写入至 package.json
     fs.writeFileSync(
         `./${url}/package.json`,
         JSON.stringify(packageJson, null, '\t'),
@@ -107,7 +75,7 @@ export const addTypescriptExtend = async (url: string) => {
         },
     );
 
-    // 开始执行命令，执行npx tsc --init，初始化ts
+    // 4. 开始执行命令，执行npx tsc --init，初始化ts
     try {
         await exec('npx tsc --init', {
             cwd: `./${url}`,
@@ -116,24 +84,15 @@ export const addTypescriptExtend = async (url: string) => {
         spinner.stop();
         npmlog.error('error', chalk.red(error));
     }
-
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    // const readPkg = require(pathJson);
-    // const readPkg = readFile(pathJson);
-    // console.log(readPkg, 'readPkg');
-
-    // 2. 添加对应的 ts 插件
-
-    // 3. return
 };
 
 /**
- * @description 添加 prettier
+ * @description 添加 prettier 的配置方法
+ * @param {string} url 当前项目的路径
+ * @return {void}
  */
 export const addPrettierExtend = async (url: string) => {
-    // 1. 执行下载命令
-    // console.log('这是添加prettier');
-    // 2. 配置当前 prettier
+    // 1. 配置当前 prettier
     const prettierJSON = `module.exports = {
     // 一行最多 80 字符
     printWidth: 80,
@@ -172,31 +131,28 @@ export const addPrettierExtend = async (url: string) => {
     endOfLine: 'lf',
 }`;
 
-    // 3. 写入当前目录
+    // 2. 写入当前目录
     fs.writeFileSync(`./${url}/.prettierrc.js`, prettierJSON, {
         encoding: 'utf-8',
     });
 
-    // 4. 添加插件和命令至 json 中
-    // const pathJson = path.join(__dirname, `./${url}/package.json`);
+    // 3. 添加插件和命令至 json 中
     const packageJson = JSON.parse(
         fs.readFileSync(`./${url}/package.json`, {
             encoding: 'utf-8',
         }),
     );
 
-    // 4.1 添加对应的插件
-    // typescript 和 @types/node @typescript-eslint/eslint-plugin @typescript-eslint
+    // 3.1 添加对应的插件
     packageJson.devDependencies['prettier'] = '^2.3.2';
     packageJson.devDependencies['eslint-config-prettier'] = '^8.3.0';
     packageJson.devDependencies['eslint-plugin-prettier'] = '^3.4.0';
 
-    // 添加执行脚本
+    // 3.2 添加执行脚本
     packageJson.scripts['prettier:comment'] =
         '自动格式化 src 目录下的所有 .ts|.js|.jsx 文件';
     packageJson.scripts['prettier'] = 'prettier --write "src/**/*.ts|.js|.jsx"';
-    // console.log(packageJson, 'packageJson');
-    // 4.2 写入至 package.json
+    // 3.3 写入至 package.json
     fs.writeFileSync(
         `./${url}/package.json`,
         JSON.stringify(packageJson, null, '\t'),
@@ -208,14 +164,11 @@ export const addPrettierExtend = async (url: string) => {
 
 /**
  * @description 添加 commitizen(规范 git 提交) 和 添加 Husky
+ * @param {string} url 当前项目的路径
+ * @return {void}
  */
 export const addCZAndHuskyExtend = async (url: string) => {
-    // console.log('这是添加commitizen');
-    // 1.执行commitizen对应的命令
-
-    // 1.1 执行Husky对应的命令
-
-    // 2. 添加cz-customizable的配置 对应的配置文件 commitizen 和 Husky
+    // 1. 添加cz-customizable的配置 对应的配置文件 commitizen 和 Husky
     const czConfigJSON = `module.exports = {
     types: [
         {value: 'init',     name: 'init:     初始提交'},
@@ -251,7 +204,7 @@ export const addCZAndHuskyExtend = async (url: string) => {
     subjectLimit: 72
 }`;
 
-    // 2.1 添加配置
+    // 1.1 添加配置
     const commitizenJSON = `module.exports = {
     extends: ['@commitlint/config-conventional'],
     rules: {
@@ -295,7 +248,7 @@ export const addCZAndHuskyExtend = async (url: string) => {
         'header-max-length': [0, 'always', 72],
     },
 };`;
-    // 3. 写入当前目录
+    // 2. 写入当前目录
     fs.writeFileSync(`./${url}/.cz-config.js`, czConfigJSON, {
         encoding: 'utf-8',
     });
@@ -303,10 +256,7 @@ export const addCZAndHuskyExtend = async (url: string) => {
         encoding: 'utf-8',
     });
 
-    // 4. 写入json
-    // yarn add -D commitizen @commitlint/config-conventional @commitlint/cli cz-customizable husky
-    // 4. 添加插件和命令至 json 中
-    // const pathJson = path.join(__dirname, '../package.json');
+    // 3. 添加插件和命令至 json 中
     const packageJson = JSON.parse(
         fs.readFileSync(`./${url}/package.json`, {
             encoding: 'utf-8',
@@ -320,18 +270,17 @@ export const addCZAndHuskyExtend = async (url: string) => {
     packageJson.devDependencies['cz-conventional-changelog'] = '^3.3.0';
     packageJson.devDependencies['husky'] = '^7.0.0';
 
-    // 添加执行脚本
+    // 3.1 添加执行脚本
     packageJson.scripts['commit:comment'] = '引导设置规范化的提交信息';
     packageJson.scripts['commit'] = 'git-cz';
 
-    // 添加 lint-staged
+    // 3.2 添加 lint-staged
     packageJson.devDependencies['lint-staged'] = '^12.0.3';
     packageJson['lint-staged'] = {
         '*.{js,ts}': ['npm run eslint', 'npm run prettier'],
     };
 
-    // console.log(packageJson, 'packageJson');
-    // 4.2 写入至 package.json
+    // 3.3 写入至 package.json
     fs.writeFileSync(
         `./${url}/package.json`,
         JSON.stringify(packageJson, null, '\t'),
@@ -340,7 +289,7 @@ export const addCZAndHuskyExtend = async (url: string) => {
         },
     );
 
-    // 复制 husky 至当前项目
+    // 4. 复制 husky 至当前项目
     const huskyPath = path.join(__dirname, '../../../../.husky');
     await fsExtra.copy(huskyPath, `./${url}/.husky`);
 };
