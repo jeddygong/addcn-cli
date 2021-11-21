@@ -324,6 +324,12 @@ export const addCZAndHuskyExtend = async (url: string) => {
     packageJson.scripts['commit:comment'] = '引导设置规范化的提交信息';
     packageJson.scripts['commit'] = 'git-cz';
 
+    // 添加 lint-staged
+    packageJson.devDependencies['lint-staged'] = '^12.0.3';
+    packageJson['lint-staged'] = {
+        '*.{js,ts}': ['npm run eslint', 'npm run prettier'],
+    };
+
     // console.log(packageJson, 'packageJson');
     // 4.2 写入至 package.json
     fs.writeFileSync(

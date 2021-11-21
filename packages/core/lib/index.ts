@@ -89,14 +89,11 @@ const registerCommand = () => {
 
     // 下载远程仓库至本地，这个可以放在下一个版本迭代
     program
-        .command('inistall <url>')
+        .command('install <url>')
         .description('安装一个自定义「模板插件包」到当前脚手架模板目录') // 把这个模板插件包下载到硬盘
         .option('-f, --force', '强制更新所有缓存信息')
         .action(async () => {
-            npmlog.success(
-                'success',
-                '安装一个「模板插件包」到当前模板缓存目录脚手架',
-            );
+            npmlog.warn('warn', '请按照正确格式安装一个「模板插件包」');
         });
 
     // 克隆仓库中的项目
@@ -106,6 +103,15 @@ const registerCommand = () => {
         .option('-f, --force', '强制更新所有缓存信息')
         .action(async (url, appName, options) => {
             clone({ url, appName, options });
+        });
+
+    // 发布项目
+    program
+        .command('publish <url> [options]')
+        .description('发布项目')
+        .option('-f, --force', '强制更新所有缓存信息')
+        .action(async () => {
+            npmlog.warn('warn', '项目发布功能正在研发中');
         });
 
     // 使program返回的错误信息是空
