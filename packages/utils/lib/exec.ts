@@ -26,7 +26,7 @@ export default function (
 ): Promise<string> {
     return new Promise((resolve, reject) => {
         child_process.exec(command, options, function (err, stdout) {
-            // console.log(err, stdout, stderr);
+            // console.log(err, stdout);
             if (err) reject(err);
             resolve(stdout);
             // spinner.stop();

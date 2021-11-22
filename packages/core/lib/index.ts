@@ -89,7 +89,7 @@ const registerCommand = () => {
 
     // 下载远程仓库至本地，这个可以放在下一个版本迭代
     program
-        .command('install <url>')
+        .command('install <url> [options]')
         .description('安装一个自定义「模板插件包」到当前脚手架模板目录') // 把这个模板插件包下载到硬盘
         .option('-f, --force', '强制更新所有缓存信息')
         .action(async () => {

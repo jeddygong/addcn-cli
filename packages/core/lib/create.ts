@@ -6,8 +6,9 @@
 
 import chalk from 'chalk';
 import fse from 'fs-extra';
+// import progress from 'progress';
 import { TEMPLATE_PATH } from './config';
-import { npmlog, inquirer, spinner } from '@addcn-cli/utils';
+import { npmlog, inquirer, spinner, exec } from '@addcn-cli/utils';
 import {
     addTypescriptExtend,
     addPrettierExtend,
@@ -17,6 +18,23 @@ import {
 export interface ICreateParams {
     appName: string;
 }
+
+// const progressBar = new progress(
+//     'downloading: [:bar] [已完成: :percent] [预计还剩 :eta 秒]',
+//     {
+//         total: 100,
+//         width: 20,
+//         complete: '=',
+//         incomplete: ' ',
+//     },
+// );
+// const timer = setInterval(function () {
+//     bar.tick(2); //进度步长
+//     if (bar.complete) {
+//         console.log('\ncomplete\n');
+//         clearInterval(timer);
+//     }
+// }, 100);
 
 export const create = async ({ appName }: ICreateParams) => {
     npmlog.info('info', `${appName} start create project`);
@@ -50,21 +68,24 @@ export const create = async ({ appName }: ICreateParams) => {
             const nowExtend = await getExtendType();
 
             // console.log(nowExtend, 'nowExtend');
-            spinner.start(`${chalk.yellow(`正在创建${typeValue}模板项目`)}`);
+            spinner.start(`${chalk.yellow(`正在创建 ${typeValue} 模板项目`)}`);
 
             // 复制缓存模板中的vue2模板
             await fse.copy(
                 `${TEMPLATE_PATH}/templates/${typeValue}`,
-                `./${appName}`,
+                `${appName}`,
             );
 
             // 添加对应的插件至模板中
             await addExtendToProject(nowExtend, appName);
 
+            spinner.succeed(`${chalk.yellow(`${appName} 项目已创建成功`)}`);
+
             // 进入项目中运行 npm run dev
+            await npmInstalling('npm run install', appName);
 
             // spinner.clear();
-            spinner.succeed(`${chalk.yellow('创建成功')}`);
+            // spinner.succeed(`${chalk.yellow('创建成功')}`);
             break;
         case 'vue3':
             // 复制缓存模板中的vue3模板
@@ -140,6 +161,12 @@ const getExtendType = async (): Promise<Array<string>> => {
     return extendArray;
 };
 
+/**
+ *@description 添加扩展插件
+ * @param {Array<string> | string} nowExtend 当前选择的插件模板
+ * @param {string} url 当前项目的路径
+ * @return {void}
+ */
 const addExtendToProject = async (
     nowExtend: Array<string> | string,
     url: string,
@@ -153,5 +180,28 @@ const addExtendToProject = async (
     }
     if (nowExtend.includes('commitizen')) {
         await addCZAndHuskyExtend(url);
+    }
+};
+
+/**
+ *@description 在项目中运行命令
+ * @param {string} command 当前需要运行的命令
+ * @param {string} url 当前项目的路径
+ * @return {void}
+ */
+const npmInstalling = async (command: string, url: string): Promise<void> => {
+    const isNpmInstall = await inquirer({
+        type: 'confirm',
+        name: 'isNpmInstall',
+        defaultValue: false,
+        message: `是否在 ${url} 项目中运行 npm install 命令？[默认No]`,
+    });
+
+    if (isNpmInstall) {
+        spinner.start(`${chalk.yellow(`正在初始化项目，请稍等...`)}`);
+        await exec('npm install', {
+            cwd: url,
+        });
+        spinner.succeed(`${chalk.yellow('初始化完成')}`);
     }
 };
