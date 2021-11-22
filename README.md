@@ -3,7 +3,7 @@
 ## 安装脚手架
 
 ```shell
-npm install @addcn/core -g
+npm install @addcn-cli/core -g
 ```
 
 
