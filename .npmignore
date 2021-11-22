@@ -8,6 +8,7 @@
 # commitlint.config.js
 
 /packages/*/__tests__
-/packages/*/bin
-/packages/*/lib
+/packages/core/bin
+/packages/core/lib
+/packages/utils/lib
 /packages/*/tsconfig.json
