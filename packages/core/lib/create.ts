@@ -61,6 +61,8 @@ export const create = async ({ appName }: ICreateParams) => {
             // 添加对应的插件至模板中
             await addExtendToProject(nowExtend, appName);
 
+            // 进入项目中运行 npm run dev
+
             // spinner.clear();
             spinner.succeed(`${chalk.yellow('创建成功')}`);
             break;

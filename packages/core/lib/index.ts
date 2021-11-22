@@ -108,7 +108,7 @@ const registerCommand = () => {
     // 发布项目
     program
         .command('publish <url> [options]')
-        .description('发布项目')
+        .description('部署项目到对应的服务器上')
         .option('-f, --force', '强制更新所有缓存信息')
         .action(async () => {
             npmlog.warn('warn', '项目发布功能正在研发中');
