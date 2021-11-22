@@ -99,7 +99,7 @@ const registerCommand = () => {
     // 克隆仓库中的项目
     program
         .command('clone <url> <app-name> [options]')
-        .description('克隆github/gitlab上的项目模板至当前目录')
+        .description('克隆github/gitlab上的某个仓库项目至本地')
         .option('-f, --force', '强制更新所有缓存信息')
         .action(async (url, appName, options) => {
             clone({ url, appName, options });
