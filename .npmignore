@@ -1,5 +1,4 @@
 # .husky/
-# node_modules/
 # .cz-config.js
 # .eslintignore
 # .eslintrc.json
@@ -7,8 +6,10 @@
 # .prettierrc.js
 # commitlint.config.js
 
-/packages/*/__tests__
-/packages/core/bin
-/packages/core/lib
-/packages/utils/lib
-/packages/*/tsconfig.json
+node_modules/
+packages/*/__tests__
+packages/core/bin/
+packages/core/lib/
+packages/utils/lib/
+packages/*/tsconfig.json
+
