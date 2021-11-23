@@ -5,6 +5,7 @@
  */
 
 // 工具库
+import path from 'path';
 import { program } from 'commander';
 import chalk from 'chalk';
 import {
@@ -21,9 +22,10 @@ import {
 import { clone } from './clone';
 import { init } from './init';
 import { create } from './create';
-import pkgConfig from '../package.json';
-
 import { LOWEST_NODE_VERSION } from './config';
+
+const pkgPath = path.join(__dirname, '../../package.json');
+const pkgConfig = require(pkgPath);
 
 async function cli() {
     spinner.text = `${chalk.yellow('欢迎使用数睿科技addcn-cli脚手架')}`;

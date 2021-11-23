@@ -60,21 +60,27 @@ export const init = async () => {
  */
 const downloadTemplate = (text: string): void => {
     spinner.start(`${chalk.yellow(`${text} template...`)}`);
-    download('github:jeddygong/addcn-template#main', TEMPLATE_PATH, (err) => {
-        try {
-            if (err) {
-                throw new Error(
-                    `克隆出错了，请确保：
+    download(
+        'github:jeddygong/addcn-template#main',
+        TEMPLATE_PATH,
+        (err: any) => {
+            try {
+                if (err) {
+                    throw new Error(
+                        `克隆出错了，请确保：
 1. 仓库名正确；
 2. 仓库分支已存在（默认master，修改分支eg:(github|gitlab|bitbucket):owner/name#branch）`,
-                );
-            }
+                    );
+                }
 
-            // 开始克隆
-            spinner.succeed(`${chalk.green(`template ${text} successfully`)}`);
-        } catch (error) {
-            spinner.stop();
-            npmlog.error('error', chalk.red(error));
-        }
-    });
+                // 开始克隆
+                spinner.succeed(
+                    `${chalk.green(`template ${text} successfully`)}`,
+                );
+            } catch (error) {
+                spinner.stop();
+                npmlog.error('error', chalk.red(error));
+            }
+        },
+    );
 };

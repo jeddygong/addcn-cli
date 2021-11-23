@@ -1,5 +1,5 @@
 #!/usr/bin/env node
 
-import cli from './../lib/index';
+import cli from '../src/index';
 
 cli();

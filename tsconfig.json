@@ -8,8 +8,9 @@
       "module": "commonjs", /* Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', or 'ESNext'. */
       "moduleResolution": "node",
       "strict": true,
-      "sourceMap": true,
+      "sourceMap": false,
       "resolveJsonModule": true,
+      "removeComments": true,
       "esModuleInterop": true,
       "skipLibCheck": true
   },
