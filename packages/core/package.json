@@ -1,6 +1,6 @@
 {
   "name": "@addcn-cli/core",
-  "version": "0.0.7",
+  "version": "0.0.8-alpha.0",
   "description": "addcn-cli 脚手架主包",
   "keywords": [
     "脚手架",
