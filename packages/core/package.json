@@ -17,7 +17,7 @@
   },
   "main": "dist/cli/index.js",
   "directories": {
-    "lib": "lib",
+    "lib": "dist",
     "test": "__tests__"
   },
   "files": [
@@ -42,7 +42,9 @@
   "devDependencies": {
     "@addcn-cli/utils": "file:../utils",
     "@types/fs-extra": "^9.0.12",
-    "@types/progress": "^2.0.5",
+    "@types/progress": "^2.0.5"
+  },
+  "dependencies": {
     "chalk": "^4.1.2",
     "commander": "^8.1.0",
     "download-git-repo": "^3.0.2",
