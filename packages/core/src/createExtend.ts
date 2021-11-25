@@ -280,7 +280,7 @@ export const addCZAndHuskyExtend = async (url: string) => {
     // 3.2 添加 lint-staged
     packageJson.devDependencies['lint-staged'] = '^12.0.3';
     packageJson['lint-staged'] = {
-        '*.{js,ts}': ['npm run eslint', 'npm run prettier'],
+        '*.{js,ts,vue,jsx}': ['npm run eslint', 'npm run prettier'],
     };
 
     // 3.3 写入至 package.json
@@ -293,6 +293,6 @@ export const addCZAndHuskyExtend = async (url: string) => {
     );
 
     // 4. 复制 husky 至当前项目
-    const huskyPath = path.join(__dirname, '../../../../.husky');
+    const huskyPath = path.join(__dirname, '../../.husky');
     await fsExtra.copy(huskyPath, `./${url}/.husky`);
 };
