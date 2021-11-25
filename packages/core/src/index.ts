@@ -190,7 +190,7 @@ const localCheckPkgVersion = async (): Promise<boolean | undefined> => {
         })) as boolean;
 
         if (isUpdateCli) {
-            spinner.start(`${chalk.yellow(`update cli...`)}`);
+            spinner.start(`${chalk.yellow(`正在更新脚手架，请稍等...`)}`);
             await exec('npm install -g @addcn-cli/core@latest');
             spinner.succeed(`${chalk.green(`addcn-cli update successfully`)}`);
         }
