@@ -62,11 +62,18 @@ export const addTypescriptExtend = async (url: string) => {
     // 3.1 添加对应的插件
     packageJson['devDependencies'] = packageJson['devDependencies'] || {};
 
+    packageJson['devDependencies']['eslint'] = '^7.32.0';
     packageJson['devDependencies']['typescript'] = '^4.3.4';
     packageJson['devDependencies']['@types/node'] = '^15.12.5';
     packageJson['devDependencies']['@typescript-eslint/eslint-plugin'] =
         '^4.28.1';
     packageJson['devDependencies']['@typescript-eslint/parser'] = '4.28.1';
+
+    // 3.1 添加执行脚本
+    packageJson.scripts['eslint:comment'] =
+        '使用 ESLint 检查并自动修复 packages 目录下所有扩展名为 .ts|.js|.jsx|.vue 的文件';
+    packageJson.scripts['eslint'] =
+        'eslint --fix packages --ext .ts|.js|.jsx|.vue --max-warnings=0';
 
     // 3.2 写入至 package.json
     fs.writeFileSync(
@@ -146,6 +153,8 @@ export const addPrettierExtend = async (url: string) => {
     );
 
     // 3.1 添加对应的插件
+    packageJson['devDependencies'] = packageJson['devDependencies'] || {};
+
     packageJson.devDependencies['prettier'] = '^2.3.2';
     packageJson.devDependencies['eslint-config-prettier'] = '^8.3.0';
     packageJson.devDependencies['eslint-plugin-prettier'] = '^3.4.0';
@@ -168,9 +177,15 @@ export const addPrettierExtend = async (url: string) => {
 /**
  * @description 添加 commitizen(规范 git 提交) 和 添加 Husky
  * @param {string} url 当前项目的路径
+ * @param {string} typeValue 当前选择的项目模板
+ * @param {Array<string> | string} nowExtend 当前选择的插件模板
  * @return {void}
  */
-export const addCZAndHuskyExtend = async (url: string) => {
+export const addCZAndHuskyExtend = async (
+    url: string,
+    typeValue: string,
+    nowExtend: Array<string> | string,
+) => {
     // 1. 添加cz-customizable的配置 对应的配置文件 commitizen 和 Husky
     const czConfigJSON = `module.exports = {
     types: [
@@ -265,6 +280,8 @@ export const addCZAndHuskyExtend = async (url: string) => {
             encoding: 'utf-8',
         }),
     );
+    packageJson['devDependencies'] = packageJson['devDependencies'] || {};
+
     packageJson.devDependencies['commitizen'] = '^4.2.4';
     packageJson.devDependencies['@commitlint/cli'] = '^12.1.4';
     packageJson.devDependencies['@commitlint/config-conventional'] = '^12.1.4';
@@ -278,9 +295,23 @@ export const addCZAndHuskyExtend = async (url: string) => {
     packageJson.scripts['commit'] = 'git-cz';
 
     // 3.2 添加 lint-staged
+    let lintArray: Array<string> = [];
+    // 如果没有选中typescript 和 prettier
+    if (nowExtend.includes('typescript')) {
+        lintArray = ['npm run eslint'];
+    }
+
+    if (typeValue === 'vue2' || typeValue === 'vue3') {
+        lintArray = ['npm run lint'];
+    }
+
+    if (nowExtend.includes('prettier')) {
+        lintArray.push('npm run prettier');
+    }
+
     packageJson.devDependencies['lint-staged'] = '^12.0.3';
     packageJson['lint-staged'] = {
-        '*.{js,ts,vue,jsx}': ['npm run eslint', 'npm run prettier'],
+        '*.{js,ts,vue,jsx}': lintArray,
     };
 
     // 3.3 写入至 package.json

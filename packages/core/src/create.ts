@@ -80,7 +80,7 @@ export const create = async ({ appName }: ICreateParams) => {
             }
 
             // 添加对应的插件至模板中
-            await addExtendToProject(vue2Extend, appName);
+            await addExtendToProject(typeValue, vue2Extend, appName);
 
             spinner.succeed(`${chalk.yellow(`${appName} 项目已创建成功`)}`);
 
@@ -108,7 +108,7 @@ export const create = async ({ appName }: ICreateParams) => {
             }
 
             // 添加对应的插件至模板中
-            await addExtendToProject(vue3Extend, appName);
+            await addExtendToProject(typeValue, vue3Extend, appName);
             spinner.succeed(`${chalk.yellow(`${appName} 项目已创建成功`)}`);
 
             // 进入项目中运行 npm run dev
@@ -135,7 +135,7 @@ export const create = async ({ appName }: ICreateParams) => {
             }
 
             // 添加对应的插件至模板中
-            await addExtendToProject(viteVue3Extend, appName);
+            await addExtendToProject(typeValue, viteVue3Extend, appName);
             spinner.succeed(`${chalk.yellow(`${appName} 项目已创建成功`)}`);
 
             // 进入项目中运行 npm run dev
@@ -162,7 +162,7 @@ export const create = async ({ appName }: ICreateParams) => {
             }
 
             // 添加对应的插件至模板中
-            await addExtendToProject(viteVue3TsExtend, appName);
+            await addExtendToProject(typeValue, viteVue3TsExtend, appName);
             spinner.succeed(`${chalk.yellow(`${appName} 项目已创建成功`)}`);
 
             // 进入项目中运行 npm run dev
@@ -189,7 +189,7 @@ export const create = async ({ appName }: ICreateParams) => {
             }
 
             // 添加对应的插件至模板中
-            await addExtendToProject(reactExtend, appName);
+            await addExtendToProject(typeValue, reactExtend, appName);
             spinner.succeed(`${chalk.yellow(`${appName} 项目已创建成功`)}`);
 
             // 进入项目中运行 npm run dev
@@ -299,11 +299,13 @@ const getExtendType = async (typeValue?: string): Promise<Array<string>> => {
 
 /**
  *@description 添加扩展插件
+ * @param {string} typeValue 当前选中的项目类型
  * @param {Array<string> | string} nowExtend 当前选择的插件模板
  * @param {string} url 当前项目的路径
  * @return {void}
  */
 const addExtendToProject = async (
+    typeValue: string,
     nowExtend: Array<string> | string,
     url: string,
 ) => {
@@ -315,7 +317,7 @@ const addExtendToProject = async (
         await addPrettierExtend(url);
     }
     if (nowExtend.includes('commitizen')) {
-        await addCZAndHuskyExtend(url);
+        await addCZAndHuskyExtend(url, typeValue, nowExtend);
     }
 };
 
