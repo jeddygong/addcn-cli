@@ -43,14 +43,14 @@ export const init = async () => {
             fs.rmdirSync(TEMPLATE_PATH);
 
             // 开始下载最新的模板
-            downloadTemplate(`update`);
+            await downloadTemplate(`update`);
         }
 
         return;
     }
 
     // 3. 开始下载该模板至addcn_cli_templates目录
-    downloadTemplate(`init`);
+    await downloadTemplate(`init`);
 };
 
 /**
@@ -58,7 +58,7 @@ export const init = async () => {
  * @param {string} text 提示
  * @return void
  */
-const downloadTemplate = (text: string): void => {
+const downloadTemplate = async (text: string): Promise<void> => {
     spinner.start(`${chalk.yellow(`${text} template...`)}`);
     download(
         'github:jeddygong/addcn-template#main',

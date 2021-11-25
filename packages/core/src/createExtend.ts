@@ -3,8 +3,7 @@ import fs from 'fs';
 import fsExtra from 'fs-extra';
 import { exec, npmlog, spinner } from '@addcn-cli/utils';
 import chalk from 'chalk';
-// import { promisify } from 'util';
-// import child_process from 'child_process';
+
 /**
  * @description 添加 typescript 的配置方法
  * @param {string} url 当前项目的路径
@@ -61,10 +60,13 @@ export const addTypescriptExtend = async (url: string) => {
     );
 
     // 3.1 添加对应的插件
-    packageJson.devDependencies['typescript'] = '^4.3.4';
-    packageJson.devDependencies['@types/node'] = '^15.12.5';
-    packageJson.devDependencies['@typescript-eslint/eslint-plugin'] = '^4.28.1';
-    packageJson.devDependencies['@typescript-eslint/parser'] = '4.28.1';
+    packageJson['devDependencies'] = packageJson['devDependencies'] || {};
+
+    packageJson['devDependencies']['typescript'] = '^4.3.4';
+    packageJson['devDependencies']['@types/node'] = '^15.12.5';
+    packageJson['devDependencies']['@typescript-eslint/eslint-plugin'] =
+        '^4.28.1';
+    packageJson['devDependencies']['@typescript-eslint/parser'] = '4.28.1';
 
     // 3.2 写入至 package.json
     fs.writeFileSync(
@@ -151,7 +153,8 @@ export const addPrettierExtend = async (url: string) => {
     // 3.2 添加执行脚本
     packageJson.scripts['prettier:comment'] =
         '自动格式化 src 目录下的所有 .ts|.js|.jsx 文件';
-    packageJson.scripts['prettier'] = 'prettier --write "src/**/*.ts|.js|.jsx"';
+    packageJson.scripts['prettier'] =
+        'prettier --write "src/**/*.ts|.js|.jsx|.vue"';
     // 3.3 写入至 package.json
     fs.writeFileSync(
         `./${url}/package.json`,

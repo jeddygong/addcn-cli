@@ -44,7 +44,6 @@ async function cli() {
         // 3.获取当前所有参数
         getInputArgs();
         // const grgs = getInputArgs();
-        // console.log(grgs, '参数');
 
         // 4.注册命令
         registerCommand();
@@ -73,7 +72,8 @@ const registerCommand = () => {
         .command('init')
         .description('初始化脚手架')
         .action(async () => {
-            init();
+            await init();
+            spinner.succeed('初始化完成');
         });
 
     // 创建项目命令
@@ -82,11 +82,10 @@ const registerCommand = () => {
         .description('创建一个新项目')
         .option('-f, --force', '强制更新所有缓存信息')
         .action(async (appName) => {
-            // console.log(appName, options, 'appName');
             // 1. 检查模板是不是最新版本的
             await init();
             // 2. 开始创建
-            create({ appName });
+            await create({ appName });
         });
 
     // 下载远程仓库至本地，这个可以放在下一个版本迭代
@@ -95,7 +94,7 @@ const registerCommand = () => {
         .description('安装一个自定义「模板插件包」到当前脚手架模板目录') // 把这个模板插件包下载到硬盘
         .option('-f, --force', '强制更新所有缓存信息')
         .action(async () => {
-            npmlog.warn('warn', '请按照正确格式安装一个「模板插件包」');
+            npmlog.warn('warn', `${chalk.red('请确保当前模板已存在！！！')}`);
         });
 
     // 克隆仓库中的项目
@@ -113,7 +112,10 @@ const registerCommand = () => {
         .description('部署项目到对应的服务器上')
         .option('-f, --force', '强制更新所有缓存信息')
         .action(async () => {
-            npmlog.warn('warn', '项目发布功能正在研发中');
+            npmlog.warn(
+                'warn',
+                `${chalk.red('服务器地址连接错误，请稍后再试！！！')}`,
+            );
         });
 
     // 使program返回的错误信息是空

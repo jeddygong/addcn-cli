@@ -48,6 +48,7 @@ export const create = async ({ appName }: ICreateParams) => {
         { value: 'react', name: 'react' },
         { value: 'koa2', name: 'koa2' },
         { value: 'express', name: 'express' },
+        { value: 'php-laravel-vue', name: 'php-laravel-vue' },
     ];
 
     // 2.选择所需的模板（控制台交互）
@@ -60,88 +61,211 @@ export const create = async ({ appName }: ICreateParams) => {
     };
     const typeValue = (await inquirer(tmplList)) as string;
 
-    // spinner.start(`${chalk.yellow(`正在创建${typeValue}模板项目`)}`);
     // 模板下载
     switch (typeValue) {
         case 'vue2':
             // eslint-disable-next-line no-case-declarations
-            const nowExtend = await getExtendType();
+            const vue2Extend = await getExtendType();
 
-            // console.log(nowExtend, 'nowExtend');
-            spinner.start(`${chalk.yellow(`正在创建 ${typeValue} 模板项目`)}`);
-
+            spinner.start(`${chalk.yellow(`正在创建${typeValue}模板项目`)}`);
             // 复制缓存模板中的vue2模板
-            await fse.copy(
-                `${TEMPLATE_PATH}/templates/${typeValue}`,
-                `${appName}`,
-            );
+            try {
+                await fse.copy(
+                    `${TEMPLATE_PATH}/templates/${typeValue}`,
+                    `./${appName}`,
+                );
+            } catch (error) {
+                spinner.stop();
+                npmlog.error('error', chalk.red(error));
+            }
 
             // 添加对应的插件至模板中
-            await addExtendToProject(nowExtend, appName);
+            await addExtendToProject(vue2Extend, appName);
 
             spinner.succeed(`${chalk.yellow(`${appName} 项目已创建成功`)}`);
 
             // 进入项目中运行 npm run dev
             await npmInstalling('npm run install', appName);
 
-            // spinner.clear();
-            // spinner.succeed(`${chalk.yellow('创建成功')}`);
+            spinner.clear();
+            spinner.succeed(`${chalk.yellow('创建成功')}`);
             break;
         case 'vue3':
+            // eslint-disable-next-line no-case-declarations
+            const vue3Extend = await getExtendType();
+
+            spinner.start(`${chalk.yellow(`正在创建${typeValue}模板项目`)}`);
+
             // 复制缓存模板中的vue3模板
-            await fse.copy(
-                `${TEMPLATE_PATH}/templates/${typeValue}`,
-                `./${appName}`,
-            );
+            try {
+                await fse.copy(
+                    `${TEMPLATE_PATH}/templates/${typeValue}`,
+                    `./${appName}`,
+                );
+            } catch (error) {
+                spinner.stop();
+                npmlog.error('error', chalk.red(error));
+            }
+
+            // 添加对应的插件至模板中
+            await addExtendToProject(vue3Extend, appName);
+            spinner.succeed(`${chalk.yellow(`${appName} 项目已创建成功`)}`);
+
+            // 进入项目中运行 npm run dev
+            await npmInstalling('npm run install', appName);
+
+            spinner.clear();
             spinner.succeed(`${chalk.yellow('创建成功')}`);
             break;
         case 'vite-vue3':
+            // eslint-disable-next-line no-case-declarations
+            const viteVue3Extend = await getExtendType();
+
+            spinner.start(`${chalk.yellow(`正在创建${typeValue}模板项目`)}`);
+
             // 复制缓存模板中的vite-vue3模板
-            await fse.copy(
-                `${TEMPLATE_PATH}/templates/${typeValue}`,
-                `./${appName}`,
-            );
+            try {
+                await fse.copy(
+                    `${TEMPLATE_PATH}/templates/${typeValue}`,
+                    `./${appName}`,
+                );
+            } catch (error) {
+                spinner.stop();
+                npmlog.error('error', chalk.red(error));
+            }
+
+            // 添加对应的插件至模板中
+            await addExtendToProject(viteVue3Extend, appName);
+            spinner.succeed(`${chalk.yellow(`${appName} 项目已创建成功`)}`);
+
+            // 进入项目中运行 npm run dev
+            await npmInstalling('npm run install', appName);
+
+            spinner.clear();
             spinner.succeed(`${chalk.yellow('创建成功')}`);
             break;
         case 'vite-vue3-ts':
+            // eslint-disable-next-line no-case-declarations
+            const viteVue3TsExtend = await getExtendType(typeValue);
+
+            spinner.start(`${chalk.yellow(`正在创建${typeValue}模板项目`)}`);
+
             // 复制缓存模板中的vite-vue3-ts模板
-            await fse.copy(
-                `${TEMPLATE_PATH}/templates/${typeValue}`,
-                `./${appName}`,
-            );
+            try {
+                await fse.copy(
+                    `${TEMPLATE_PATH}/templates/${typeValue}`,
+                    `./${appName}`,
+                );
+            } catch (error) {
+                spinner.stop();
+                npmlog.error('error', chalk.red(error));
+            }
+
+            // 添加对应的插件至模板中
+            await addExtendToProject(viteVue3TsExtend, appName);
+            spinner.succeed(`${chalk.yellow(`${appName} 项目已创建成功`)}`);
+
+            // 进入项目中运行 npm run dev
+            await npmInstalling('npm run install', appName);
+
+            spinner.clear();
             spinner.succeed(`${chalk.yellow('创建成功')}`);
             break;
         case 'react':
+            // eslint-disable-next-line no-case-declarations
+            const reactExtend = await getExtendType();
+
+            spinner.start(`${chalk.yellow(`正在创建${typeValue}模板项目`)}`);
+
             // 复制缓存模板中的react模板
-            await fse.copy(
-                `${TEMPLATE_PATH}/templates/${typeValue}`,
-                `./${appName}`,
-            );
+            try {
+                await fse.copy(
+                    `${TEMPLATE_PATH}/templates/${typeValue}`,
+                    `./${appName}`,
+                );
+            } catch (error) {
+                spinner.stop();
+                npmlog.error('error', chalk.red(error));
+            }
+
+            // 添加对应的插件至模板中
+            await addExtendToProject(reactExtend, appName);
+            spinner.succeed(`${chalk.yellow(`${appName} 项目已创建成功`)}`);
+
+            // 进入项目中运行 npm run dev
+            await npmInstalling('npm run install', appName);
+
+            spinner.clear();
             spinner.succeed(`${chalk.yellow('创建成功')}`);
             break;
         case 'koa2':
+            spinner.start(`${chalk.yellow(`正在创建${typeValue}模板项目`)}`);
             // 复制缓存模板中的koa2模板
-            await fse.copy(
-                `${TEMPLATE_PATH}/templates/${typeValue}`,
-                `./${appName}`,
-            );
+            try {
+                await fse.copy(
+                    `${TEMPLATE_PATH}/templates/${typeValue}`,
+                    `./${appName}`,
+                );
+            } catch (error) {
+                spinner.stop();
+                npmlog.error('error', chalk.red(error));
+            }
+            spinner.succeed(`${chalk.yellow(`${appName} 项目已创建成功`)}`);
+
+            // 进入项目中运行 npm run dev
+            await npmInstalling('npm run install', appName);
+
+            spinner.clear();
             spinner.succeed(`${chalk.yellow('创建成功')}`);
             break;
         case 'express':
+            spinner.start(`${chalk.yellow(`正在创建${typeValue}模板项目`)}`);
             // 复制缓存模板中的express模板
-            await fse.copy(
-                `${TEMPLATE_PATH}/templates/${typeValue}`,
-                `./${appName}`,
-            );
+            try {
+                await fse.copy(
+                    `${TEMPLATE_PATH}/templates/${typeValue}`,
+                    `./${appName}`,
+                );
+            } catch (error) {
+                spinner.stop();
+                npmlog.error('error', chalk.red(error));
+            }
+            spinner.succeed(`${chalk.yellow(`${appName} 项目已创建成功`)}`);
+
+            // 进入项目中运行 npm run dev
+            await npmInstalling('npm run install', appName);
+
+            spinner.clear();
+            spinner.succeed(`${chalk.yellow('创建成功')}`);
+            break;
+        case 'php-laravel-vue':
+            spinner.start(`${chalk.yellow(`正在创建${typeValue}模板项目`)}`);
+            // 复制缓存模板中的php-laravel-vue模板
+            try {
+                await fse.copy(
+                    `${TEMPLATE_PATH}/templates/${typeValue}`,
+                    `./${appName}`,
+                );
+            } catch (error) {
+                spinner.stop();
+                npmlog.error('error', chalk.red(error));
+            }
+
+            spinner.succeed(`${chalk.yellow(`${appName} 项目已创建成功`)}`);
+
+            // 进入项目中运行 npm run dev
+            await npmInstalling('npm run install', appName);
+
+            spinner.clear();
             spinner.succeed(`${chalk.yellow('创建成功')}`);
             break;
     }
 };
 
-const getExtendType = async (): Promise<Array<string>> => {
+const getExtendType = async (typeValue?: string): Promise<Array<string>> => {
     // 扩展插件
     const tmplExtend = {
-        type: 'checkbox', // rowlist， 会多一个序号和answer
+        type: 'checkbox',
         name: 'extendArray',
         message: '[多选]是否需要添加以下配置？',
         // default: 'eslint', // 默认选中 eslint
@@ -155,6 +279,18 @@ const getExtendType = async (): Promise<Array<string>> => {
             },
         ],
     };
+
+    // 单独处理 vite-vue3-ts
+    if (typeValue === 'vite-vue3-ts') {
+        tmplExtend.choices = [
+            { value: 'prettier', name: 'prettier' },
+            {
+                value: 'commitizen',
+                name: 'commitizen + husky(规范 git 提交)',
+            },
+        ];
+    }
+
     const extendArray = await inquirer(tmplExtend);
 
     // console.log(extendArray, 'checkboxs');
@@ -194,7 +330,7 @@ const npmInstalling = async (command: string, url: string): Promise<void> => {
         type: 'confirm',
         name: 'isNpmInstall',
         defaultValue: false,
-        message: `是否在 ${url} 项目中运行 npm install 命令？[默认No]`,
+        message: `是否在「${url}」项目中运行「npm install」命令？[默认No]`,
     });
 
     if (isNpmInstall) {
