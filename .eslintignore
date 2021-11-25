@@ -1,5 +1,5 @@
 
 node_modules/
-types/*
-dist/*
-packages/template/templates
+types/
+dist/
+.husky/

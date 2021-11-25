@@ -103,7 +103,7 @@ const registerCommand = () => {
         .description('克隆github/gitlab上的某个仓库项目至本地')
         .option('-f, --force', '强制更新所有缓存信息')
         .action(async (url, appName, options) => {
-            clone({ url, appName, options });
+            await clone({ url, appName, options });
         });
 
     // 发布项目

@@ -6,12 +6,11 @@
 
 import fs from 'fs';
 import chalk from 'chalk';
-import download from 'download-git-repo';
 import fse from 'fs-extra';
 import { TEMPLATE_PATH } from './config';
-import { npmlog, spinner, inquirer, checkPkgVersion } from '@addcn-cli/utils';
+import { spinner, inquirer, checkPkgVersion, download } from '@addcn-cli/utils';
 
-export const init = async () => {
+export const init = async (): Promise<void> => {
     // 1. 检查本地缓存目录，是否存在该模板
     const isExists = fs.existsSync(TEMPLATE_PATH);
 
@@ -59,28 +58,12 @@ export const init = async () => {
  * @return void
  */
 const downloadTemplate = async (text: string): Promise<void> => {
-    spinner.start(`${chalk.yellow(`${text} template...`)}`);
-    download(
-        'github:jeddygong/addcn-template#main',
-        TEMPLATE_PATH,
-        (err: any) => {
-            try {
-                if (err) {
-                    throw new Error(
-                        `克隆出错了，请确保：
-1. 仓库名正确；
-2. 仓库分支已存在（默认master，修改分支eg:(github|gitlab|bitbucket):owner/name#branch）`,
-                    );
-                }
-
-                // 开始克隆
-                spinner.succeed(
-                    `${chalk.green(`template ${text} successfully`)}`,
-                );
-            } catch (error) {
-                spinner.stop();
-                npmlog.error('error', chalk.red(error));
-            }
-        },
-    );
+    spinner.start(`${chalk.yellow(`正在更新模板，请稍等...`)}`);
+    try {
+        await download('github:jeddygong/addcn-template#main', TEMPLATE_PATH);
+        spinner.succeed(`${chalk.green(`template ${text} successfully`)}`);
+    } catch (error) {
+        spinner.stop();
+        throw new Error(error as string);
+    }
 };

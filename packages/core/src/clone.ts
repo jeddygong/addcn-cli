@@ -5,22 +5,18 @@
  */
 
 // 工具库
-import download from 'download-git-repo';
 import chalk from 'chalk';
-import { npmlog, spinner } from '@addcn-cli/utils';
+import { npmlog, spinner, download } from '@addcn-cli/utils';
 
 export interface ICloneParams {
     url: string;
     appName: string;
-    options: any;
+    options?: any;
 }
 
-export const clone = ({ url, appName, options }: ICloneParams) => {
-    npmlog.info('info', `${url}--${appName}--${options} start create project`);
-
+export const clone = async ({ url, appName }: ICloneParams): Promise<void> => {
+    spinner.stop();
     try {
-        spinner.start(`${chalk.yellow(`准备克隆`)}`);
-
         // 1. 检测当前的url
         const reg = new RegExp(
             /^(github|gitlab|bitbucket):([0-9a-z.]+)\/([0-9a-z.]+)/gi,
@@ -34,24 +30,9 @@ export const clone = ({ url, appName, options }: ICloneParams) => {
         }
 
         // 2. 开始克隆
-        download(url, appName, (err) => {
-            spinner.start(`${chalk.yellow(`正在克隆中......`)}`);
-            try {
-                if (err) {
-                    throw new Error(
-                        `克隆出错了，请确保：
-1. 请确保仓库名正确；
-2. 请确保仓库分支已存在（默认master，修改分支eg:(github|gitlab|bitbucket):owner/name#branch）`,
-                    );
-                }
-                spinner.succeed(
-                    `${chalk.green(`克隆成功，已克隆至${appName}目录下`)}`,
-                );
-            } catch (error) {
-                spinner.stop();
-                npmlog.error('error', chalk.red(error));
-            }
-        });
+        spinner.start(`${chalk.yellow(`正在克隆中......`)}`);
+        await download(url, appName);
+        spinner.succeed(`${chalk.green(`克隆成功，已克隆至${appName}目录下`)}`);
     } catch (error) {
         spinner.stop();
         npmlog.error('error', chalk.red(error));
