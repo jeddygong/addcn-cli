@@ -1,6 +1,6 @@
 /**
  * @description 下载远程github/gitlab/bitbucket仓库代码
- * @author gongjin@addcn.com<10801>
+ * @author Jeddy
  * @create 2021-11-05 20:30:18
  */
 
